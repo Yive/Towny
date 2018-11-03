@@ -66,8 +66,8 @@ public class TownClaim extends Thread {
 	@Override
 	public void run() {
 
-		List<TownyWorld> worlds = new ArrayList<TownyWorld>();
-		List<Town> towns = new ArrayList<Town>();
+		List<TownyWorld> worlds = new ArrayList<>();
+		List<Town> towns = new ArrayList<>();
 		TownyWorld world;
 		if (player != null)
 			TownyMessaging.sendMsg(player, "Processing " + ((claim) ? "Town Claim..." : "Town unclaim..."));
@@ -187,7 +187,6 @@ public class TownClaim extends Thread {
 					TownyRegenAPI.addWorldCoord(townBlock.getWorldCoord());
 					townBlock.setLocked(true);
 				}
-				plotChunk = null;				
 			}
 
 			TownyUniverse.getDataSource().saveTownBlock(townBlock);
@@ -212,19 +211,7 @@ public class TownClaim extends Thread {
 				}
 			}
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-
-				@Override
-				public void run() {
-
-					
-					TownyUniverse.getDataSource().removeTownBlock(townBlock);
-					
-					// Raise an event to signal the unclaim
-					// As of 0.91.4.3 we are doing this inside of the removeTownBlock code to support more types of unclaiming.
-					//BukkitTools.getPluginManager().callEvent(new TownUnclaimEvent(town, worldCoord));
-				}
-			}, 1);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> TownyUniverse.getDataSource().removeTownBlock(townBlock), 1);
 
 		} catch (NotRegisteredException e) {
 			throw new TownyException(TownySettings.getLangString("msg_not_claimed_1"));
@@ -233,17 +220,12 @@ public class TownClaim extends Thread {
 
 	public static void townUnclaimAll(Towny plugin, final Town town) {
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+			TownyUniverse.getDataSource().removeTownBlocks(town);
+			TownyMessaging.sendTownMessage(town, TownySettings.getLangString("msg_abandoned_area_1"));
 
-			@Override
-			public void run() {
-
-				TownyUniverse.getDataSource().removeTownBlocks(town);
-				TownyMessaging.sendTownMessage(town, TownySettings.getLangString("msg_abandoned_area_1"));
-				
-				// Raise an event to signal the unclaim
-				BukkitTools.getPluginManager().callEvent(new TownUnclaimEvent(town, null));
-			}
+			// Raise an event to signal the unclaim
+			BukkitTools.getPluginManager().callEvent(new TownUnclaimEvent(town, null));
 		}, 1);
 
 	}

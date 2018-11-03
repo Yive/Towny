@@ -46,7 +46,7 @@ public class ProtectionRegenTask extends TownyTimerTask {
 	private BlockState altState;
 	private BlockLocation blockLocation;
 	private int TaskId;
-	private List<ItemStack> contents = new ArrayList<ItemStack>();
+	private List<ItemStack> contents = new ArrayList<>();
 	
 	//Tekkit - InventoryView
 
@@ -120,11 +120,11 @@ public class ProtectionRegenTask extends TownyTimerTask {
 				
 				Door door = (Door) state.getData();
 								
-				BlockFace face = null;
-                boolean isOpen = false;
-                boolean isHinge = false;
-				Block topHalf = null;
-				Block bottomHalf = null;
+				BlockFace face;
+                boolean isOpen;
+                boolean isHinge;
+				Block topHalf;
+				Block bottomHalf;
 
 				if (door.isTopHalf()) {
 					topHalf = block;
@@ -317,7 +317,7 @@ public class ProtectionRegenTask extends TownyTimerTask {
 				block.setType(state.getType());
 				WoodenStep stateData = (WoodenStep) state.getData();
 				boolean inverted = ((WoodenStep) state.getData()).isInverted();	
-				((WoodenStep) stateData).setInverted(inverted);
+				stateData.setInverted(inverted);
 				state.setData(stateData);
 				state.update();
 
@@ -326,7 +326,7 @@ public class ProtectionRegenTask extends TownyTimerTask {
 				block.setType(state.getType());
 				Step stateData = (Step) state.getData();
 				boolean inverted = ((Step) state.getData()).isInverted();	
-				((Step) stateData).setInverted(inverted);
+				stateData.setInverted(inverted);
 				state.setData(stateData);
 				state.update();
 			
@@ -335,7 +335,7 @@ public class ProtectionRegenTask extends TownyTimerTask {
 				block.setType(state.getType());
 				Colorable stateData = (Colorable) state.getData();
 				DyeColor colour = ((Colorable) state.getData()).getColor();
-				((Colorable) stateData).setColor(colour);
+				stateData.setColor(colour);
 				state.setData((MaterialData) stateData);
 				state.update();
 
@@ -344,8 +344,8 @@ public class ProtectionRegenTask extends TownyTimerTask {
 				block.setType(state.getType());
 				LongGrass stateData = (LongGrass) state.getData();
 				GrassSpecies species =  ((LongGrass) state.getData()).getSpecies();
-				((LongGrass) stateData).setSpecies(species);
-				state.setData((MaterialData) stateData);
+				stateData.setSpecies(species);
+				state.setData(stateData);
 				state.update();
 				
 			} else if (state.getType().equals(Material.CONCRETE) || state.getType().equals(Material.CONCRETE_POWDER) 
@@ -353,7 +353,7 @@ public class ProtectionRegenTask extends TownyTimerTask {
 					|| state.getType().equals(Material.STAINED_GLASS_PANE) ) {
 				// TODO Make this not use bytes for colour after the new api is out in 1.13
 				block.setType(state.getType());
-				Byte b = state.getRawData();
+				byte b = state.getRawData();
 				state.setRawData(b);
 				state.update();
 

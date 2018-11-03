@@ -36,10 +36,10 @@ import com.palmergames.util.StringMgmt;
 public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 
 	private static Towny plugin;
-	private static final List<String> townyworld_help = new ArrayList<String>();
-	private static final List<String> townyworld_help_console = new ArrayList<String>();
-	private static final List<String> townyworld_set = new ArrayList<String>();
-	private static final List<String> townyworld_set_console = new ArrayList<String>();
+	private static final List<String> townyworld_help = new ArrayList<>();
+	private static final List<String> townyworld_help_console = new ArrayList<>();
+	private static final List<String> townyworld_set = new ArrayList<>();
+	private static final List<String> townyworld_set_console = new ArrayList<>();
 	private static TownyWorld Globalworld;
 	
 	private boolean isConsole = false;
@@ -106,8 +106,7 @@ public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 
 		if (split[0].equalsIgnoreCase("regen") || split[0].equalsIgnoreCase("undo") || split[0].equalsIgnoreCase("set") || split[0].equalsIgnoreCase("toggle")) {
 			for (String line : townyworld_help_console)
-				sender.sendMessage(line);			
-			return;
+				sender.sendMessage(line);
 		} else if (split.length > 0) {
 			try {
 				Globalworld = TownyUniverse.getDataSource().getWorld(split[0].toLowerCase());
@@ -236,16 +235,6 @@ public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 						// Failed to get resident
 					}
 
-			} else {
-				/*
-				 * try { TownyWorld world =
-				 * plugin.getTownyUniverse().getWorld(split[0]);
-				 * TownyMessaging.sendMessage(player,
-				 * plugin.getTownyUniverse().getStatus(world)); } catch
-				 * (NotRegisteredException x) { plugin.sendErrorMsg(player,
-				 * String.format(TownySettings.getLangString
-				 * ("msg_err_not_registered_1"), split[0])); }
-				 */
 			}
 
 		} catch (TownyException e) {
@@ -260,7 +249,7 @@ public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 		} else
 			player.sendMessage(ChatTools.formatTitle(TownySettings.getLangString("world_plu")));
 
-		ArrayList<String> formatedList = new ArrayList<String>();
+		ArrayList<String> formatedList = new ArrayList<>();
 		HashMap<String, Integer> playersPerWorld = BukkitTools.getPlayersPerWorld();
 		for (TownyWorld world : TownyUniverse.getDataSource().getWorlds()) {
 			int numPlayers = playersPerWorld.containsKey(world.getName()) ? playersPerWorld.get(world.getName()) : 0;
@@ -490,7 +479,7 @@ public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 						sender.sendMessage("Eg: /townyworld set wildignore SAPLING,GOLD_ORE,IRON_ORE <world>");
 				else
 					try {
-						List<String> mats = new ArrayList<String>();
+						List<String> mats = new ArrayList<>();
 						for (String s : StringMgmt.remFirstArg(split))
 							mats.add(Material.matchMaterial(s.trim().toUpperCase()).name());
 
@@ -515,7 +504,7 @@ public class TownyWorldCommand extends BaseCommand implements CommandExecutor {
 						sender.sendMessage("Eg: /townyworld set wildregen Creeper,EnderCrystal,EnderDragon,Fireball,SmallFireball,LargeFireball,TNTPrimed,ExplosiveMinecart <world>");
 				else {
 
-					List<String> entities = new ArrayList<String>(Arrays.asList(StringMgmt.remFirstArg(split)));
+					List<String> entities = new ArrayList<>(Arrays.asList(StringMgmt.remFirstArg(split)));
 
 					Globalworld.setPlotManagementWildRevertEntities(entities);
 

@@ -37,7 +37,7 @@ public class ChatTools {
 			String line = "";
 			for (int i = 0; i < args.size() - 1; i++)
 				line += args.get(i) + ", ";
-			line += args.get(args.size() - 1).toString();
+			line += args.get(args.size() - 1);
 
 			return color(prefix + line);
 		}
@@ -73,6 +73,7 @@ public class ChatTools {
 					if (out.get(i).substring(index, index + 1).equalsIgnoreCase("\u00A7"))
 						c = out.get(i).substring(index + 1, index + 2);
 				} catch (Exception e) {
+					// ignored
 				}
 		}
 

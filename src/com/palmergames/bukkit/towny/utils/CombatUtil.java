@@ -176,7 +176,7 @@ public class CombatUtil {
 				 * Defender is not a player so check for PvM
 				 */
 				if (defenderTB != null) {
-					Resident AttackingResident = null;
+					Resident AttackingResident;
 					if(defenderTB.getType() == TownBlockType.FARM) {
 						AttackingResident = TownyUniverse.getDataSource().getResident(attackingPlayer.getName());
 						if (!AttackingResident.hasTown())
@@ -333,10 +333,7 @@ public class CombatUtil {
 	public static boolean isWorldPvP(TownyWorld world) {
 
 		// Universe is only PvP
-		if (world.isForcePVP() || world.isPVP())
-			return true;
-
-		return false;
+		return world.isForcePVP() || world.isPVP();
 	}
 
 	/**

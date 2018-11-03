@@ -229,7 +229,7 @@ public class PlotClaim extends Thread {
 
 	private void residentUnclaimAll() {
 
-		List<TownBlock> selection = new ArrayList<TownBlock>(resident.getTownBlocks());
+		List<TownBlock> selection = new ArrayList<>(resident.getTownBlocks());
 
 		for (TownBlock townBlock : selection) {
 			try {

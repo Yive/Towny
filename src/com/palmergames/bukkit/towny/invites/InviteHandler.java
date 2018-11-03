@@ -29,9 +29,9 @@ public class InviteHandler {
 	private static ListMultimap<Nation, Town> nationtotowninvites = ArrayListMultimap.create();
 	private static ListMultimap<Nation, Nation> nationtonationinvites = ArrayListMultimap.create();
 
-	public static void initialize(Towny plugin) {
+	public static void initialize(Towny pl) {
 
-		InviteHandler.plugin = plugin;
+		plugin = pl;
 	}
 
 	public static void acceptInvite(Invite invite) throws InvalidObjectException, TownyException {
@@ -53,7 +53,7 @@ public class InviteHandler {
 		if (receiver instanceof Town) {
 			if (sender instanceof Nation) { // Has to be true!
 				Town town = (Town) invite.getReceiver();
-				List<Town> towns = new ArrayList<Town>();
+				List<Town> towns = new ArrayList<>();
 				towns.add(town);
 				Nation nation = (Nation) invite.getSender();
 				NationCommand.nationAdd(nation, towns);

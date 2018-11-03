@@ -2,7 +2,6 @@ package com.palmergames.bukkit.towny;
 
 import com.earth2me.essentials.Essentials;
 import com.palmergames.bukkit.metrics.BStats;
-import com.palmergames.bukkit.metrics.MCStats;
 import com.palmergames.bukkit.towny.chat.TNCRegister;
 import com.palmergames.bukkit.towny.command.InviteCommand;
 import com.palmergames.bukkit.towny.command.NationCommand;
@@ -39,7 +38,6 @@ import com.palmergames.bukkit.towny.object.TownyUniverse;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.permissions.BukkitPermSource;
-import com.palmergames.bukkit.towny.permissions.GroupManagerSource;
 import com.palmergames.bukkit.towny.permissions.NullPermSource;
 import com.palmergames.bukkit.towny.permissions.PEXSource;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
@@ -128,16 +126,6 @@ public class Towny extends JavaPlugin {
 		 */
 		@SuppressWarnings("unused")
 		BStats bStatsMetrics = new BStats(this);
-		
-		/*
-		 * Register MCStats Metrics
-		 */
-		try {
-		    MCStats mcStatsMetrics = new MCStats(this);
-		    mcStatsMetrics.start();
-		} catch (IOException e) {
-			System.err.println("[Towny] Error setting up MCStats metrics");
-		}
 
 
 		version = this.getDescription().getVersion();
@@ -229,14 +217,11 @@ public class Towny extends JavaPlugin {
 
 		System.out.println("==============================================================");
 
-		if (TownyUniverse.getDataSource() != null && error == false)
-			TownyUniverse.getDataSource().saveQueues();
+		if (TownyUniverse.getDataSource() != null && !error) TownyUniverse.getDataSource().saveQueues();
 
-		if (error == false)
-			TownyWar.onDisable();
+		if (!error) TownyWar.onDisable();
 
-		if (TownyUniverse.isWarTime())
-			getTownyUniverse().getWarEvent().toggleEnd();
+		if (TownyUniverse.isWarTime()) getTownyUniverse().getWarEvent().toggleEnd();
 
 		TownyTimerHandler.toggleTownyRepeatingTimer(false);
 		TownyTimerHandler.toggleDailyTimer(false);
@@ -300,11 +285,7 @@ public class Towny extends JavaPlugin {
 
 		if (TownySettings.isUsingPermissions()) {
 			test = getServer().getPluginManager().getPlugin("GroupManager");
-			if (test != null) {
-				// groupManager = (GroupManager)test;
-				this.getTownyUniverse().setPermissionSource(new GroupManagerSource(this, test));
-				using.add(String.format("%s v%s", "GroupManager", test.getDescription().getVersion()));
-			} else {
+			if (test == null) {
 				test = getServer().getPluginManager().getPlugin("PermissionsEx");
 				if (test != null) {
 					// permissions = (PermissionsEX)test;
@@ -538,7 +519,6 @@ public class Towny extends JavaPlugin {
 	public void newCache(Player player) {
 
 		try {
-			getTownyUniverse();
 			playerCache.put(player.getName().toLowerCase(), new PlayerCache(TownyUniverse.getDataSource().getWorld(player.getWorld().getName()), player));
 		} catch (NotRegisteredException e) {
 			TownyMessaging.sendErrorMsg(player, "Could not create permission cache for this world (" + player.getWorld().getName() + ".");
@@ -603,7 +583,7 @@ public class Towny extends JavaPlugin {
 	 */
 	public void updateCache() {
 
-		WorldCoord worldCoord = null;
+		WorldCoord worldCoord;
 
 		for (Player player : BukkitTools.getOnlinePlayers()) {
 			if (player != null) {

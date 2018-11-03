@@ -47,7 +47,7 @@ import java.util.List;
 public class PlotCommand extends BaseCommand implements CommandExecutor {
 
 	private static Towny plugin;
-	public static final List<String> output = new ArrayList<String>();
+	public static final List<String> output = new ArrayList<>();
 
 	static {
 		output.add(ChatTools.formatTitle("/plot"));
@@ -140,7 +140,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 
 						// Remove any plots Not for sale (if not the mayor) and
 						// tally up costs.
-						for (WorldCoord worldCoord : new ArrayList<WorldCoord>(selection)) {
+						for (WorldCoord worldCoord : new ArrayList<>(selection)) {
 							try {
 								double price = worldCoord.getTownBlock().getPlotPrice();
 								if (price > -1)
@@ -280,7 +280,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 								return true;
 							}
 						} else {
-							selection = new ArrayList<WorldCoord>();
+							selection = new ArrayList<>();
 							selection.add(pos);
 						}
 
@@ -465,9 +465,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 				} else
 					throw new TownyException(String.format(TownySettings.getLangString("msg_err_invalid_property"), split[0]));
 
-			} catch (TownyException x) {
-				TownyMessaging.sendErrorMsg(player, x.getMessage());
-			} catch (EconomyException x) {
+			} catch (TownyException | EconomyException x) {
 				TownyMessaging.sendErrorMsg(player, x.getMessage());
 			}
 		}
@@ -607,7 +605,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 
 				try {
 					boolean b = plugin.parseOnOff(split[2]);
-					String s = "";
+					String s;
 					s = split[0] + split[1];
 					perm.set(s, b);
 				} catch (Exception e) {
@@ -849,7 +847,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 					&& (townBlock.getTown() == resident.getTown()))				
 					return owner;
 					
-			boolean isSameTown = (resident.hasTown()) ? resident.getTown() == owner.getTown() : false;			
+			boolean isSameTown = (resident.hasTown()) && resident.getTown() == owner.getTown();
 
 			if ((resident == owner)
 					|| ((isSameTown) && (player.hasPermission(PermissionNodes.TOWNY_COMMAND_PLOT_ASMAYOR.getNode())))
@@ -865,7 +863,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 		} else {
 
 			Town owner = townBlock.getTown();
-			boolean isSameTown = (resident.hasTown()) ? resident.getTown() == owner : false;
+			boolean isSameTown = (resident.hasTown()) && resident.getTown() == owner;
 
 			if (isSameTown && !BukkitTools.getPlayer(resident.getName()).hasPermission(PermissionNodes.TOWNY_COMMAND_PLOT_ASMAYOR.getNode()))
 				throw new TownyException(TownySettings.getLangString("msg_not_mayor_ass"));
@@ -885,7 +883,7 @@ public class PlotCommand extends BaseCommand implements CommandExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-		LinkedList<String> output = new LinkedList<String>();
+		LinkedList<String> output = new LinkedList<>();
 		String lastArg = "";
 
 		// Get the last argument

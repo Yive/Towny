@@ -233,8 +233,8 @@ public class PlayerCacheUtil {
 		}
 
 		//TownyUniverse universe = plugin.getTownyUniverse();
-		TownBlock townBlock = null;
-		Town town = null;
+		TownBlock townBlock;
+		Town town;
 		try {
 			townBlock = worldCoord.getTownBlock();
 			town = townBlock.getTown();
@@ -430,8 +430,8 @@ public class PlayerCacheUtil {
 							return true;
 						} else {
 						
-							Nation playersNation = null;
-							Town nearestTown = null; 
+							Nation playersNation;
+							Town nearestTown = null;
 							nearestTown = pos.getTownyWorld().getClosestTownWithNationFromCoord(pos.getCoord(), nearestTown);
 							Nation nearestNation = nearestTown.getNation();
 			

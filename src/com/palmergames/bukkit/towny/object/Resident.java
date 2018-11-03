@@ -27,8 +27,8 @@ import java.util.List;
 
 public class Resident extends TownBlockOwner implements ResidentModes, TownyInviteReceiver{
 
-	private List<Resident> friends = new ArrayList<Resident>();
-	private List<Object[][][]> regenUndo = new ArrayList<Object[][][]>();
+	private List<Resident> friends = new ArrayList<>();
+	private List<Object[][][]> regenUndo = new ArrayList<>();
 	private Town town = null;
 	private long lastOnline, registered;
 	private boolean isNPC = false;
@@ -40,11 +40,11 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 	private Location teleportDestination;
 	private double teleportCost;
 	private String chatFormattedName;
-	private List<String> modes = new ArrayList<String>();
+	private List<String> modes = new ArrayList<>();
 	private ConfirmationType confirmationType;
 
-	private List<String> townRanks = new ArrayList<String>();
-	private List<String> nationRanks = new ArrayList<String>();
+	private List<String> townRanks = new ArrayList<>();
+	private List<String> nationRanks = new ArrayList<>();
 
 	public Resident(String name) {
 
@@ -127,7 +127,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 		if (this.isJailed) {
 			this.setJailed(false);
 			try {
-				Location loc = null;
+				Location loc;
 				if (this.hasTown())
 					loc = this.getTown().getSpawn();
 				else
@@ -165,11 +165,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 
 	public boolean hasJailSpawn() {
 
-		if (this.JailSpawn <= 1) {
-			return true;
-		} else {
-			return false;
-		}
+		return JailSpawn <= 1;
 
 	}
 
@@ -254,7 +250,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 
 	public boolean isMayor() {
 
-		return hasTown() ? town.isMayor(this) : false;
+		return hasTown() && town.isMayor(this);
 	}
 
 	public boolean hasTown() {
@@ -264,7 +260,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 
 	public boolean hasNation() {
 
-		return hasTown() ? town.hasNation() : false;
+		return hasTown() && town.hasNation();
 	}
 
 	public Town getTown() throws NotRegisteredException {
@@ -330,10 +326,11 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 
 	public void removeAllFriends() {
 
-		for (Resident resident : new ArrayList<Resident>(friends))
+		for (Resident resident : new ArrayList<>(friends))
 			try {
 				removeFriend(resident);
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 	}
 
@@ -349,6 +346,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 				setSurname("");
 				updatePerms();
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 	}
 
@@ -376,7 +374,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 	@Override
 	public List<String> getTreeString(int depth) {
 
-		List<String> out = new ArrayList<String>();
+		List<String> out = new ArrayList<>();
 		out.add(getTreeDepth(depth) + "Resident (" + getName() + ")");
 		out.add(getTreeDepth(depth + 1) + "Registered: " + getRegistered());
 		out.add(getTreeDepth(depth + 1) + "Last Online: " + getLastOnline());
@@ -637,12 +635,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 				if (this.getTown().getNation().hasAlly(otherresident.getTown().getNation())) {
 					return true;
 				} else {
-
-					if (this.getTown().getNation().equals(otherresident.getTown().getNation())) {
-						return true;
-					} else {
-						return false;
-					}
+					return getTown().getNation().equals(otherresident.getTown().getNation());
 				}
 			} catch (NotRegisteredException e) {
 				return false;
@@ -673,7 +666,7 @@ public class Resident extends TownBlockOwner implements ResidentModes, TownyInvi
 		receivedinvites.remove(invite);
 	}
 
-	private List<Invite> receivedinvites = new ArrayList<Invite>();
+	private List<Invite> receivedinvites = new ArrayList<>();
 
 	public void setConfirmationType(ConfirmationType confirmationType) {
 		this.confirmationType = confirmationType;

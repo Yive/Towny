@@ -20,7 +20,7 @@ public class EntityTypeUtil {
 
 	public static List<Class<?>> parseLivingEntityClassNames(List<String> mobClassNames, String errorPrefix) {
 
-		List<Class<?>> livingEntityClasses = new ArrayList<Class<?>>();
+		List<Class<?>> livingEntityClasses = new ArrayList<>();
 		for (String mobClassName : mobClassNames) {
 			if (mobClassName.isEmpty())
 				continue;

@@ -23,7 +23,7 @@ public class TeleportWarmupTimerTask extends TownyTimerTask {
 	public TeleportWarmupTimerTask(Towny plugin) {
 
 		super(plugin);
-		teleportQueue = new ArrayDeque<Resident>();
+		teleportQueue = new ArrayDeque<>();
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class TeleportWarmupTimerTask extends TownyTimerTask {
 			teleportQueue.add(resident);
 		} catch (NullPointerException e) {
 			System.out.println("[Towny] Error: Null returned from teleport queue.");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 		}
 	}
 

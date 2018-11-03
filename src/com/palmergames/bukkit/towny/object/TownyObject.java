@@ -32,7 +32,7 @@ public abstract class TownyObject extends Observable {
 
 	public List<String> getTreeString(int depth) {
 
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 
 	public String getTreeDepth(int depth) {

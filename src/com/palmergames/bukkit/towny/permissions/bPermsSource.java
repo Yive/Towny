@@ -1,10 +1,10 @@
 package com.palmergames.bukkit.towny.permissions;
 
+import de.bananaco.bpermissions.api.CalculableType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import de.bananaco.bpermissions.api.ApiLayer;
-import de.bananaco.bpermissions.api.util.CalculableType;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownySettings;
@@ -31,19 +31,15 @@ public class bPermsSource extends TownyPermissionSource {
 	@Override
 	public String getPrefixSuffix(Resident resident, String node) {
 
-		String group = "", user = "";
+		String group, user;
 		Player player = BukkitTools.getPlayer(resident.getName());
-
 		group = ApiLayer.getValue(player.getWorld().getName(), CalculableType.GROUP, getPlayerGroup(player), node);
 		user = ApiLayer.getValue(player.getWorld().getName(), CalculableType.USER, player.getName(), node);
 
-		if (group == null)
-			group = "";
-		if (user == null)
-			user = "";
+		if (group == null) group = "";
+		if (user == null) user = "";
 
-		if (!group.equals(user))
-			user = group + user;
+		if (!group.equals(user)) user = group + user;
 		user = TownySettings.parseSingleLineString(user);
 
 		return user;
@@ -67,10 +63,11 @@ public class bPermsSource extends TownyPermissionSource {
 
 		try {
 			iReturn = Integer.parseInt(result);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+			// ignored
+		}
 		
-		if (iReturn == -1)
-			iReturn = getEffectivePermIntNode(playerName, node);
+		if (iReturn == -1) iReturn = getEffectivePermIntNode(playerName, node);
 		
 		return iReturn;
 
@@ -87,10 +84,11 @@ public class bPermsSource extends TownyPermissionSource {
 
 		try {
 			iReturn = Integer.parseInt(result);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+			// ignored
+		}
 		
-		if (iReturn == -1)
-			iReturn = getEffectivePermIntNode(playerName, node);
+		if (iReturn == -1) iReturn = getEffectivePermIntNode(playerName, node);
 		
 		return iReturn;
 	}
@@ -108,8 +106,7 @@ public class bPermsSource extends TownyPermissionSource {
 
 		String result = ApiLayer.getValue(player.getWorld().getName(), CalculableType.USER, player.getName(), node);
 
-		if (result == null)
-			return "";
+		if (result == null) return "";
 
 		return result;
 

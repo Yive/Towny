@@ -17,7 +17,7 @@ public class ResidentPurge extends Thread {
 
 	Towny plugin;
 	private CommandSender sender = null;
-	long deleteTime;
+	private long deleteTime;
 
 	/**
 	 * @param plugin reference to towny
@@ -36,7 +36,7 @@ public class ResidentPurge extends Thread {
 		int count = 0;
 
 		message("Scanning for old residents...");
-		for (Resident resident : new ArrayList<Resident>(TownyUniverse.getDataSource().getResidents())) {
+		for (Resident resident : new ArrayList<>(TownyUniverse.getDataSource().getResidents())) {
 			if (!resident.isNPC() && (System.currentTimeMillis() - resident.getLastOnline() > (this.deleteTime)) && !BukkitTools.isOnline(resident.getName())) {
 				count++;
 				message("Deleting resident: " + resident.getName());

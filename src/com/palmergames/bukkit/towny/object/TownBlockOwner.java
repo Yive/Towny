@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 public class TownBlockOwner extends TownyEconomyObject {
 
-	protected List<TownBlock> townBlocks = new ArrayList<TownBlock>();
+	protected List<TownBlock> townBlocks = new ArrayList<>();
 	protected TownyPermission permissions = new TownyPermission();
 
 	public void setTownblocks(List<TownBlock> townblocks) {

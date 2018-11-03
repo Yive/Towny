@@ -27,7 +27,7 @@ import java.util.List;
 public class InviteCommand extends BaseCommand implements CommandExecutor {
 
 	private static Towny plugin;
-	private static final List<String> invite_help = new ArrayList<String>();
+	private static final List<String> invite_help = new ArrayList<>();
 
 	static {
 
@@ -66,16 +66,12 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 			for (String line : invite_help) {
 				player.sendMessage(line);
 			}
-			return;
 		} else if (split[0].equalsIgnoreCase("list")) {
 			parseInviteList(player, split);
-			return;
 		} else if (split[0].equalsIgnoreCase(TownySettings.getAcceptCommand())) {
 			parseAccept(player, StringMgmt.remFirstArg(split));
-			return;
 		} else if (split[0].equalsIgnoreCase(TownySettings.getDenyCommand())) {
 			parseDeny(player, StringMgmt.remFirstArg(split));
-			return;
 		}
 
 	}
@@ -102,7 +98,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 						try {
 							page = Integer.parseInt(split[1]);
 						} catch (NumberFormatException e) {
-							page = 1;
+							// ignored
 						}
 					}
 				}
@@ -120,7 +116,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 
 	public static void parseDeny(Player player, String[] args) {
 		Resident resident;
-		Town town = null;
+		Town town;
 		try {
 			resident = TownyUniverse.getDataSource().getResident(player.getName());
 		} catch (TownyException x) {
@@ -173,7 +169,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 
 	public static void parseAccept(Player player, String[] args) {
 		Resident resident;
-		Town town = null;
+		Town town;
 		try {
 			resident = TownyUniverse.getDataSource().getResident(player.getName());
 		} catch (TownyException x) {
@@ -209,9 +205,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 					try {
 						InviteHandler.acceptInvite(invite);
 						return;
-					} catch (TownyException e) {
-						e.printStackTrace();
-					} catch (InvalidObjectException e) {
+					} catch (TownyException | InvalidObjectException e) {
 						e.printStackTrace(); // Shouldn't happen, however like i said a fallback
 					}
 				}
@@ -235,7 +229,7 @@ public class InviteCommand extends BaseCommand implements CommandExecutor {
 		if (page > total) {
 			return;
 		}
-		List<String> invitesformatted = new ArrayList<String>();
+		List<String> invitesformatted = new ArrayList<>();
 		int iMax = page * 10;
 		if ((page * 10) > list.size()) {
 			iMax = list.size();

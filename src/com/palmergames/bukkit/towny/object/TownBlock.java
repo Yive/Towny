@@ -43,12 +43,15 @@ public class TownBlock {
 			if (hasTown())
 				this.town.removeTownBlock(this);
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 		this.town = town;
 		try {
 			town.addTownBlock(this);
 		} catch (AlreadyRegisteredException e) {
+			// ignored
 		} catch (NullPointerException e) {
+			// ignored
 		}
 	}
 
@@ -70,6 +73,7 @@ public class TownBlock {
 			if (hasResident())
 				this.resident.removeTownBlock(this);
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 		this.resident = resident;
 		try {
@@ -105,12 +109,14 @@ public class TownBlock {
 			if (owner == getTown())
 				return true;
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 
 		try {
 			if (owner == getResident())
 				return true;
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 
 		return false;

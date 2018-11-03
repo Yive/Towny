@@ -28,13 +28,13 @@ public class TownyWar {
 
 	public static void onEnable() {
 
-		cellsUnderAttack = new HashMap<Cell, CellUnderAttack>();
-		cellsUnderAttackByPlayer = new HashMap<String, List<CellUnderAttack>>();
+		cellsUnderAttack = new HashMap<>();
+		cellsUnderAttackByPlayer = new HashMap<>();
 	}
 
 	public static void onDisable() {
 
-		for (CellUnderAttack cell : new ArrayList<CellUnderAttack>(cellsUnderAttack.values())) {
+		for (CellUnderAttack cell : new ArrayList<>(cellsUnderAttack.values())) {
 			attackCanceled(cell);
 		}
 	}
@@ -142,14 +142,14 @@ public class TownyWar {
 		if (cells == null)
 			return null;
 		else
-			return new ArrayList<CellUnderAttack>(cells);
+			return new ArrayList<>(cells);
 	}
 
 	private static void addFlagToPlayerCount(String playerName, CellUnderAttack cell) {
 
 		List<CellUnderAttack> activeFlags = getCellsUnderAttackByPlayer(playerName);
 		if (activeFlags == null)
-			activeFlags = new ArrayList<CellUnderAttack>();
+			activeFlags = new ArrayList<>();
 
 		activeFlags.add(cell);
 		cellsUnderAttackByPlayer.put(playerName, activeFlags);
@@ -343,7 +343,7 @@ public class TownyWar {
 			throw new TownyException(String.format(TownySettings.getLangString("msg_err_enemy_war_require_online"), requiredOnline, nation.getFormattedName()));
 	}
 
-	public static WorldCoord cellToWorldCoord(Cell cell) throws NotRegisteredException {
+	public static WorldCoord cellToWorldCoord(Cell cell) {
 
 		return new WorldCoord(cell.getWorldName(), cell.getX(), cell.getZ());
 	}

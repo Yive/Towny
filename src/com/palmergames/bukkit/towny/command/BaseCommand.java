@@ -19,7 +19,7 @@ public class BaseCommand implements TabCompleter{
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-		LinkedList<String> output = new LinkedList<String>();
+		LinkedList<String> output = new LinkedList<>();
 		String lastArg = "";
 
 		// Get the last argument

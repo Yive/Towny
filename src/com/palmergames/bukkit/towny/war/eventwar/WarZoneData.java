@@ -17,10 +17,10 @@ public class WarZoneData {
 	private HashSet<Player> allPlayers;
 	
 	public WarZoneData () {
-		attackers = new HashSet<Player>();
-		defenders = new HashSet<Player>();
-		attackerTowns = new HashSet<Town>();
-		allPlayers = new HashSet<Player>();
+		attackers = new HashSet<>();
+		defenders = new HashSet<>();
+		attackerTowns = new HashSet<>();
+		allPlayers = new HashSet<>();
 	}
 
 	public int getHealthChange () {

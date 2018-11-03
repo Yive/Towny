@@ -10,6 +10,7 @@ import com.palmergames.bukkit.towny.object.TownyUniverse;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.FileMgmt;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -35,8 +36,8 @@ import java.util.Set;
  */
 public class TownyPerms {
 
-	protected static LinkedHashMap<String, Permission> registeredPermissions = new LinkedHashMap<String, Permission>();
-	protected static HashMap<String, PermissionAttachment> attachments = new HashMap<String, PermissionAttachment>();
+	protected static LinkedHashMap<String, Permission> registeredPermissions = new LinkedHashMap<>();
+	protected static HashMap<String, PermissionAttachment> attachments = new HashMap<>();
 	private static CommentedConfiguration perms;
 	private static Towny plugin;
 	
@@ -66,7 +67,7 @@ public class TownyPerms {
 	 * @param defaultRes
 	 * @throws IOException
 	 */
-	public static void loadPerms(String filepath, String defaultRes) throws IOException {
+	public static void loadPerms(String filepath, String defaultRes) {
 
 		String fullPath = filepath + FileMgmt.fileSeparator() + defaultRes;
 
@@ -91,7 +92,7 @@ public class TownyPerms {
 	 */
 	public static void assignPermissions(Resident resident, Player player) {
 
-		PermissionAttachment playersAttachment = null;
+		PermissionAttachment playersAttachment;
 
 		if (resident == null) {
 			try {
@@ -115,7 +116,7 @@ public class TownyPerms {
 			return;
 		}
 
-		TownyWorld World = null;
+		TownyWorld World;
 
 		try {
 			World = TownyUniverse.getDataSource().getWorld(player.getLocation().getWorld().getName());
@@ -177,7 +178,6 @@ public class TownyPerms {
 	 * @param name
 	 */
 	public static void removeAttachment(String name) {
-		
 		if (attachments.containsKey(name))
 			attachments.remove(name);
 		
@@ -241,7 +241,7 @@ public class TownyPerms {
 	 */
 	public static LinkedHashMap<String, Boolean> getResidentPerms(Resident resident) {
 		
-		Set<String> permList = new HashSet<String>();
+		Set<String> permList = new HashSet<>();
 		
 		// Start by adding the default perms everyone gets
 		permList.addAll(getDefault());
@@ -274,10 +274,10 @@ public class TownyPerms {
 			}
 		}
 		
-		List<String> playerPermArray = sort(new ArrayList<String>(permList));
-		LinkedHashMap<String, Boolean> newPerms = new LinkedHashMap<String, Boolean>();
+		List<String> playerPermArray = sort(new ArrayList<>(permList));
+		LinkedHashMap<String, Boolean> newPerms = new LinkedHashMap<>();
 
-		Boolean value = false;
+		boolean value;
 		for (String permission : playerPermArray) {			
 			if (permission.contains("{townname}")) {
 				if (resident.hasTown())
@@ -285,6 +285,7 @@ public class TownyPerms {
 						String placeholderPerm = permission.replace("{townname}", resident.getTown().getName().toLowerCase());
 						newPerms.put(placeholderPerm, true);
 					} catch (NotRegisteredException e) {
+						// ignored
 					}
 			} else if (permission.contains("{nationname}")) {
 				if (resident.hasNation())
@@ -292,6 +293,7 @@ public class TownyPerms {
 						String placeholderPerm = permission.replace("{nationname}", resident.getTown().getNation().getName().toLowerCase());
 						newPerms.put(placeholderPerm, true);
 					} catch (NotRegisteredException e) {
+						// ignored
 					}
 			} else {
 				value = (!permission.startsWith("-"));
@@ -303,39 +305,32 @@ public class TownyPerms {
 	}
 	
 	public static void registerPermissionNodes() {
-		
-		 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new
-		 Runnable(){
 
-			@Override
-			public void run() {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+			Permission perm;
 
-				Permission perm;
-				
-				/*
-				 * Register Town ranks
-				 */
-				for (String rank : getTownRanks()) {
-					perm = new
-					Permission(PermissionNodes.TOWNY_COMMAND_TOWN_RANK.getNode(rank),
-					"User can grant this town rank to others..",
-					PermissionDefault.FALSE, null);
-					perm.addParent(PermissionNodes.TOWNY_COMMAND_TOWN_RANK.getNode(), true);
-				}
-				
-				/*
-				 * Register Nation ranks
-				 */
-				for (String rank : getNationRanks()) {
-					perm = new
-					Permission(PermissionNodes.TOWNY_COMMAND_NATION_RANK.getNode(rank),
-					"User can grant this town rank to others..",
-					PermissionDefault.FALSE, null);
-					perm.addParent(PermissionNodes.TOWNY_COMMAND_NATION_RANK.getNode(), true);
-				}
+			/*
+			 * Register Town ranks
+			 */
+			for (String rank : getTownRanks()) {
+				perm = new
+						Permission(PermissionNodes.TOWNY_COMMAND_TOWN_RANK.getNode(rank),
+						"User can grant this town rank to others..",
+						PermissionDefault.FALSE, null);
+				perm.addParent(PermissionNodes.TOWNY_COMMAND_TOWN_RANK.getNode(), true);
 			}
-			 
-		 },1);
+
+			/*
+			 * Register Nation ranks
+			 */
+			for (String rank : getNationRanks()) {
+				perm = new
+						Permission(PermissionNodes.TOWNY_COMMAND_NATION_RANK.getNode(rank),
+						"User can grant this town rank to others..",
+						PermissionDefault.FALSE, null);
+				perm.addParent(PermissionNodes.TOWNY_COMMAND_NATION_RANK.getNode(), true);
+			}
+		},1);
 	}
 
 	/*
@@ -350,7 +345,7 @@ public class TownyPerms {
 	public static List<String> getDefault() {
 
 		List<String> permsList = getList("nomad");
-		return (permsList == null)? new ArrayList<String>() : permsList;
+		return (permsList == null)? new ArrayList<>() : permsList;
 	}
 
 	/*
@@ -364,7 +359,7 @@ public class TownyPerms {
 	 */
 	public static List<String> getTownRanks() {
 
-		return new ArrayList<String>(((MemorySection) perms.get("towns.ranks")).getKeys(false));
+		return new ArrayList<>(((MemorySection) perms.get("towns.ranks")).getKeys(false));
 	}
 
 	/**
@@ -376,7 +371,7 @@ public class TownyPerms {
 
 		List<String> permsList = getList("towns.default");
 		if ((permsList == null)) {
-			List<String> emptyPermsList = new ArrayList<String>();
+			List<String> emptyPermsList = new ArrayList<>();
 			emptyPermsList.add("towny.town." + town.getName().toLowerCase());
 			return emptyPermsList;
 		} else {
@@ -393,7 +388,7 @@ public class TownyPerms {
 	public static List<String> getTownMayor() {
 
 		List<String> permsList = getList("towns.mayor");
-		return (permsList == null)? new ArrayList<String>() : permsList;
+		return (permsList == null)? new ArrayList<>() : permsList;
 	}
 
 	/**
@@ -405,7 +400,7 @@ public class TownyPerms {
 	public static List<String> getTownRank(String rank) {
 
 		List<String> permsList = getList("towns.ranks." + rank);//.toLowerCase());
-		return (permsList == null)? new ArrayList<String>() : permsList;
+		return (permsList == null)? new ArrayList<>() : permsList;
 	}
 
 	/*
@@ -419,7 +414,7 @@ public class TownyPerms {
 	 */
 	public static List<String> getNationRanks() {
 
-		return new ArrayList<String>(((MemorySection) perms.get("nations.ranks")).getKeys(false));
+		return new ArrayList<>(((MemorySection) perms.get("nations.ranks")).getKeys(false));
 	}
 
 	/**
@@ -430,7 +425,7 @@ public class TownyPerms {
 	public static List<String> getNationDefault() {
 
 		List<String> permsList = getList("nations.default");
-		return (permsList == null)? new ArrayList<String>() : permsList;
+		return (permsList == null)? new ArrayList<>() : permsList;
 	}
 
 	/**
@@ -441,7 +436,7 @@ public class TownyPerms {
 	public static List<String> getNationKing() {
 
 		List<String> permsList = getList("nations.king");
-		return (permsList == null)? new ArrayList<String>() : permsList;
+		return (permsList == null)? new ArrayList<>() : permsList;
 	}
 
 	/**
@@ -453,7 +448,7 @@ public class TownyPerms {
 	public static List<String> getNationRank(String rank) {
 
 		List<String> permsList = getList("nations.ranks." + rank);//.toLowerCase());
-		return (permsList == null)? new ArrayList<String>() : permsList;
+		return (permsList == null)? new ArrayList<>() : permsList;
 	}
 	
 	/*
@@ -481,17 +476,17 @@ public class TownyPerms {
 	 */
 	private static List<String> sort(List<String> permList) {
 		
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 
 		for (String key : permList) {
 			String a = key.charAt(0) == '-' ? key.substring(1) : key;
-			Map<String, Boolean> allchildren = getAllChildren(a, new HashSet<String>());
+			Map<String, Boolean> allchildren = getAllChildren(a, new HashSet<>());
 			if (allchildren != null) {
 
 				ListIterator<String> itr = result.listIterator();
 
 				while (itr.hasNext()) {
-					String node = (String) itr.next();
+					String node = itr.next();
 					String b = node.charAt(0) == '-' ? node.substring(1) : node;
 
 					// Insert the parent node before the child
@@ -518,14 +513,14 @@ public class TownyPerms {
 	 */
 	public List<String> getAllRegisteredPermissions(boolean includeChildren) {
 
-		List<String> perms = new ArrayList<String>();
+		List<String> perms = new ArrayList<>();
 
 		for (String key : registeredPermissions.keySet()) {
 			if (!perms.contains(key)) {
 				perms.add(key);
 
 				if (includeChildren) {
-					Map<String, Boolean> children = getAllChildren(key, new HashSet<String>());
+					Map<String, Boolean> children = getAllChildren(key, new HashSet<>());
 					if (children != null) {
 						for (String node : children.keySet())
 							if (!perms.contains(node))
@@ -549,8 +544,8 @@ public class TownyPerms {
 	 */
 	public static Map<String, Boolean> getAllChildren(String node, Set<String> playerPermArray) {
 
-		LinkedList<String> stack = new LinkedList<String>();
-		Map<String, Boolean> alreadyVisited = new HashMap<String, Boolean>();
+		LinkedList<String> stack = new LinkedList<>();
+		Map<String, Boolean> alreadyVisited = new HashMap<>();
 		stack.push(node);
 		alreadyVisited.put(node, true);
 

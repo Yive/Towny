@@ -54,6 +54,7 @@ public class DailyTimerTask extends TownyTimerTask {
 				TownyMessaging.sendDebugMsg("Collecting Nation Costs");
 				collectNationCosts();
 			} catch (EconomyException e) {
+				// ignored
 			} catch (TownyException e) {
 				// TODO king exception
 				e.printStackTrace();
@@ -102,9 +103,9 @@ public class DailyTimerTask extends TownyTimerTask {
 	 */
 	public void collectNationTaxes() throws EconomyException {
 
-		List<Nation> nations = new ArrayList<Nation>(TownyUniverse.getDataSource().getNations());
+		List<Nation> nations = new ArrayList<>(TownyUniverse.getDataSource().getNations());
 		ListIterator<Nation> nationItr = nations.listIterator();
-		Nation nation = null;
+		Nation nation;
 
 		while (nationItr.hasNext()) {
 			nation = nationItr.next();
@@ -128,9 +129,9 @@ public class DailyTimerTask extends TownyTimerTask {
 
 		if (nation.getTaxes() > 0) {
 
-			List<Town> towns = new ArrayList<Town>(nation.getTowns());
+			List<Town> towns = new ArrayList<>(nation.getTowns());
 			ListIterator<Town> townItr = towns.listIterator();
-			Town town = null;
+			Town town;
 
 			while (townItr.hasNext()) {
 				town = townItr.next();
@@ -150,6 +151,7 @@ public class DailyTimerTask extends TownyTimerTask {
 						} catch (EmptyNationException e) {
 							// Always has 1 town (capital) so ignore
 						} catch (NotRegisteredException e) {
+							// ignored
 						}
 						TownyUniverse.getDataSource().saveTown(town);
 						TownyUniverse.getDataSource().saveNation(nation);
@@ -168,9 +170,9 @@ public class DailyTimerTask extends TownyTimerTask {
 	 */
 	public void collectTownTaxes() throws EconomyException {
 
-		List<Town> towns = new ArrayList<Town>(TownyUniverse.getDataSource().getTowns());
+		List<Town> towns = new ArrayList<>(TownyUniverse.getDataSource().getTowns());
 		ListIterator<Town> townItr = towns.listIterator();
-		Town town = null;
+		Town town;
 
 		while (townItr.hasNext()) {
 			town = townItr.next();
@@ -196,9 +198,9 @@ public class DailyTimerTask extends TownyTimerTask {
 		// Resident Tax
 		if (town.getTaxes() > 0) {
 
-			List<Resident> residents = new ArrayList<Resident>(town.getResidents());
+			List<Resident> residents = new ArrayList<>(town.getResidents());
 			ListIterator<Resident> residentItr = residents.listIterator();
-			Resident resident = null;
+			Resident resident;
 
 			while (residentItr.hasNext()) {
 				resident = residentItr.next();
@@ -264,9 +266,9 @@ public class DailyTimerTask extends TownyTimerTask {
 			// Hashtable<Resident, Double> townTaxes = new Hashtable<Resident,
 			// Double>();
 
-			List<TownBlock> townBlocks = new ArrayList<TownBlock>(town.getTownBlocks());
+			List<TownBlock> townBlocks = new ArrayList<>(town.getTownBlocks());
 			ListIterator<TownBlock> townBlockItr = townBlocks.listIterator();
-			TownBlock townBlock = null;
+			TownBlock townBlock;
 
 			while (townBlockItr.hasNext()) {
 				townBlock = townBlockItr.next();
@@ -309,6 +311,7 @@ public class DailyTimerTask extends TownyTimerTask {
 							// }
 					}
 				} catch (NotRegisteredException e) {
+					// ignored
 				}
 			}
 			/*
@@ -333,9 +336,9 @@ public class DailyTimerTask extends TownyTimerTask {
 	 */
 	public void collectTownCosts() throws EconomyException, TownyException {
 
-		List<Town> towns = new ArrayList<Town>(TownyUniverse.getDataSource().getTowns());
+		List<Town> towns = new ArrayList<>(TownyUniverse.getDataSource().getTowns());
 		ListIterator<Town> townItr = towns.listIterator();
-		Town town = null;
+		Town town;
 
 		while (townItr.hasNext()) {
 			town = townItr.next();
@@ -360,7 +363,7 @@ public class DailyTimerTask extends TownyTimerTask {
 						if (TownySettings.isUpkeepPayingPlots()) {
 							// Pay each plot owner a share of the negative
 							// upkeep
-							List<TownBlock> plots = new ArrayList<TownBlock>(town.getTownBlocks());
+							List<TownBlock> plots = new ArrayList<>(town.getTownBlocks());
 
 							for (TownBlock townBlock : plots) {
 								if (townBlock.hasResident())
@@ -389,9 +392,9 @@ public class DailyTimerTask extends TownyTimerTask {
 	 */
 	public void collectNationCosts() throws EconomyException {
 
-		List<Nation> nations = new ArrayList<Nation>(TownyUniverse.getDataSource().getNations());
+		List<Nation> nations = new ArrayList<>(TownyUniverse.getDataSource().getNations());
 		ListIterator<Nation> nationItr = nations.listIterator();
-		Nation nation = null;
+		Nation nation;
 
 		while (nationItr.hasNext()) {
 			nation = nationItr.next();

@@ -41,7 +41,7 @@ public class WarTimerTask extends TownyTimerTask {
 		}
 
 		int numPlayers = 0;
-		Hashtable<TownBlock, WarZoneData> plotList = new Hashtable<TownBlock, WarZoneData>();
+		Hashtable<TownBlock, WarZoneData> plotList = new Hashtable<>();
 		for (Player player : BukkitTools.getOnlinePlayers()) {
 			if (player != null) {
 				numPlayers += 1;

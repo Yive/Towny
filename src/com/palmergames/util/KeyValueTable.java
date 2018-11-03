@@ -10,7 +10,7 @@ import com.palmergames.util.Sorting;
 
 public class KeyValueTable<K, V> {
 
-	private List<KeyValue<K, V>> keyValues = new ArrayList<KeyValue<K, V>>();
+	private List<KeyValue<K, V>> keyValues = new ArrayList<>();
 
 	public List<KeyValue<K, V>> getKeyValues() {
 
@@ -28,7 +28,7 @@ public class KeyValueTable<K, V> {
 
 	public KeyValueTable(Hashtable<K, V> table) {
 
-		this(new ArrayList<K>(table.keySet()), new ArrayList<V>(table.values()));
+		this(new ArrayList<>(table.keySet()), new ArrayList<>(table.values()));
 	}
 
 	public KeyValueTable(List<K> keys, List<V> values) {
@@ -37,12 +37,12 @@ public class KeyValueTable<K, V> {
 		//	throw new Exception();
 
 		for (int i = 0; i < keys.size(); i++)
-			keyValues.add(new KeyValue<K, V>(keys.get(i), values.get(i)));
+			keyValues.add(new KeyValue<>(keys.get(i), values.get(i)));
 	}
 
 	public void put(K key, V value) {
 
-		keyValues.add(new KeyValue<K, V>(key, value));
+		keyValues.add(new KeyValue<>(key, value));
 	}
 
 	public void add(KeyValue<K, V> keyValue) {

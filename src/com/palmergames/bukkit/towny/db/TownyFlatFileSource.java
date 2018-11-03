@@ -273,6 +273,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.newTownBlock(x, z);
 					} catch (AlreadyRegisteredException e) {
+						// ignored
 					}
 
 				}
@@ -336,7 +337,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 
 		TownyMessaging.sendDebugMsg("Loading Town List");
 		String line = null;
-		BufferedReader fin = null;
+		BufferedReader fin;
 
 		try {
 			fin = new BufferedReader(new FileReader(rootFolder + dataFolder + FileMgmt.fileSeparator() + "towns.txt"));
@@ -376,7 +377,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 
 		TownyMessaging.sendDebugMsg("Loading Nation List");
 		String line = null;
-		BufferedReader fin = null;
+		BufferedReader fin;
 
 		try {
 			fin = new BufferedReader(new FileReader(rootFolder + dataFolder + FileMgmt.fileSeparator() + "nations.txt"));
@@ -418,7 +419,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 			for (World world : plugin.getServer().getWorlds())
 				try {
 					newWorld(world.getName());
-				} catch (AlreadyRegisteredException | NotRegisteredException e) {
+				} catch (AlreadyRegisteredException e) {
 					//e.printStackTrace();
 				}
 		}
@@ -724,6 +725,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						town.setHasUpkeep(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("taxpercent");
@@ -731,6 +733,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						town.setTaxPercentage(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("taxes");
@@ -794,6 +797,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						town.setAdminDisabledPVP(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				/*
@@ -810,12 +814,14 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						town.setOpen(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				line = kvFile.get("public");
 				if (line != null)
 					try {
 						town.setPublic(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				/*
 				 * line = kvFile.get("explosion");
@@ -880,6 +886,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 							}
 							town.forceSetSpawn(loc);
 						} catch (NumberFormatException | NullPointerException | NotRegisteredException e) {
+							// ignored
 						}
 				}
 
@@ -903,6 +910,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 								}
 								town.forceAddOutpostSpawn(loc);
 							} catch (NumberFormatException | NullPointerException | NotRegisteredException e) {
+								// ignored
 							}
 					}
 				}
@@ -927,6 +935,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 								}
 								town.forceAddJailSpawn(loc);
 							} catch (NumberFormatException | NullPointerException | NotRegisteredException e) {
+								// ignored
 							}
 					}
 				}
@@ -1096,6 +1105,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 							}
 							nation.forceSetNationSpawn(loc);
 						} catch (NumberFormatException | NullPointerException | NotRegisteredException e) {
+							// ignored
 						}
 				}
 
@@ -1104,6 +1114,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						nation.setPublic(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 			} catch (Exception e) {
@@ -1155,6 +1166,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setClaimable(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("pvp");
@@ -1162,6 +1174,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setPVP(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("forcepvp");
@@ -1169,6 +1182,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setForcePVP(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("forcetownmobs");
@@ -1176,6 +1190,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setForceTownMobs(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("worldmobs");
@@ -1183,6 +1198,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setWorldMobs(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("firespread");
@@ -1190,6 +1206,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setFire(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("forcefirespread");
@@ -1197,6 +1214,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setForceFire(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("explosions");
@@ -1204,6 +1222,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setExpl(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("forceexplosions");
@@ -1211,6 +1230,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setForceExpl(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("endermanprotect");
@@ -1218,6 +1238,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setEndermanProtect(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("disableplayertrample");
@@ -1225,6 +1246,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setDisablePlayerTrample(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("disablecreaturetrample");
@@ -1232,6 +1254,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setDisableCreatureTrample(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("unclaimedZoneBuild");
@@ -1239,30 +1262,35 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setUnclaimedZoneBuild(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				line = kvFile.get("unclaimedZoneDestroy");
 				if (line != null)
 					try {
 						world.setUnclaimedZoneDestroy(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				line = kvFile.get("unclaimedZoneSwitch");
 				if (line != null)
 					try {
 						world.setUnclaimedZoneSwitch(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				line = kvFile.get("unclaimedZoneItemUse");
 				if (line != null)
 					try {
 						world.setUnclaimedZoneItemUse(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				line = kvFile.get("unclaimedZoneName");
 				if (line != null)
 					try {
 						world.setUnclaimedZoneName(line);
 					} catch (Exception e) {
+						// ignored
 					}
 				line = kvFile.get("unclaimedZoneIgnoreIds");
 				if (line != null)
@@ -1280,6 +1308,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 								}
 						world.setUnclaimedZoneIgnore(mats);
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("usingPlotManagementDelete");
@@ -1287,6 +1316,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setUsingPlotManagementDelete(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				line = kvFile.get("plotManagementDeleteIds");
 				if (line != null)
@@ -1305,6 +1335,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 								}
 						world.setPlotManagementDeleteIds(mats);
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("usingPlotManagementMayorDelete");
@@ -1312,6 +1343,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setUsingPlotManagementMayorDelete(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				line = kvFile.get("plotManagementMayorDelete");
 				if (line != null)
@@ -1322,9 +1354,11 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 								try {
 									materials.add(s.toUpperCase().trim());
 								} catch (NumberFormatException e) {
+									// ignored
 								}
 						world.setPlotManagementMayorDelete(materials);
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("usingPlotManagementRevert");
@@ -1332,6 +1366,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setUsingPlotManagementRevert(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 				/*
 				 * No longer used - Never was used. Sadly not configurable per-world based on how the timer runs.
@@ -1358,6 +1393,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 								}
 						world.setPlotManagementIgnoreIds(mats);
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("usingPlotManagementWildRegen");
@@ -1365,6 +1401,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setUsingPlotManagementWildRevert(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("PlotManagementWildRegenEntities");
@@ -1376,9 +1413,11 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 								try {
 									entities.add(s.trim());
 								} catch (NumberFormatException e) {
+									// ignored
 								}
 						world.setPlotManagementWildRevertEntities(entities);
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("usingPlotManagementWildRegenDelay");
@@ -1386,6 +1425,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setPlotManagementWildRevertDelay(Long.parseLong(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				line = kvFile.get("usingTowny");
@@ -1393,6 +1433,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 					try {
 						world.setUsingTowny(Boolean.parseBoolean(line));
 					} catch (Exception e) {
+						// ignored
 					}
 
 				// loadTownBlocks(world);
@@ -1429,6 +1470,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 						try {
 							townBlock.setName(line.trim());
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.getString("price");
@@ -1436,6 +1478,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 						try {
 							townBlock.setPlotPrice(Double.parseDouble(line.trim()));
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.getString("town");
@@ -1444,6 +1487,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 							Town town = getTown(line.trim());
 							townBlock.setTown(town);
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.getString("resident");
@@ -1452,6 +1496,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 							Resident res = getResident(line.trim());
 							townBlock.setResident(res);
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.getString("type");
@@ -1459,6 +1504,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 						try {
 							townBlock.setType(Integer.parseInt(line));
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.getString("outpost");
@@ -1466,6 +1512,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 						try {
 							townBlock.setOutpost(Boolean.parseBoolean(line));
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.get("permissions");
@@ -1474,6 +1521,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 							townBlock.setPermissions(line.trim());
 							//set = true;
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.get("changed");
@@ -1481,6 +1529,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 						try {
 							townBlock.setChanged(Boolean.parseBoolean(line.trim()));
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.get("locked");
@@ -1488,6 +1537,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 						try {
 							townBlock.setLocked(Boolean.parseBoolean(line.trim()));
 						} catch (Exception e) {
+							// ignored
 						}
 
 					line = kvFile.getString("town");
@@ -1668,6 +1718,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 			try {
 				list.add("town=" + resident.getTown().getName());
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 			list.add("town-ranks=" + StringMgmt.join(resident.getTownRanks(), ","));
 			list.add("nation-ranks=" + StringMgmt.join(resident.getNationRanks(), ","));
@@ -1706,6 +1757,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 			try {
 				list.add("nation=" + town.getNation().getName());
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 
 		// Assistants
@@ -1768,6 +1820,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 			try {
 				list.add("homeBlock=" + town.getHomeBlock().getWorld().getName() + "," + Integer.toString(town.getHomeBlock().getX()) + "," + Integer.toString(town.getHomeBlock().getZ()));
 			} catch (TownyException e) {
+				// ignored
 			}
 
 		// Spawn
@@ -1775,6 +1828,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 			try {
 				list.add("spawn=" + town.getSpawn().getWorld().getName() + "," + Double.toString(town.getSpawn().getX()) + "," + Double.toString(town.getSpawn().getY()) + "," + Double.toString(town.getSpawn().getZ()) + "," + Float.toString(town.getSpawn().getPitch()) + "," + Float.toString(town.getSpawn().getYaw()));
 			} catch (TownyException e) {
+				// ignored
 			}
 
 		// Outpost Spawns
@@ -1848,7 +1902,9 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 		if (nation.hasNationSpawn()) {
 			try {
 				list.add("nationSpawn=" + nation.getNationSpawn().getWorld().getName() + "," + Double.toString(nation.getNationSpawn().getX()) + "," + Double.toString(nation.getNationSpawn().getY()) + "," + Double.toString(nation.getNationSpawn().getZ()) + "," + Float.toString(nation.getNationSpawn().getPitch()) + "," + Float.toString(nation.getNationSpawn().getYaw()));
-			} catch (TownyException e) { }
+			} catch (TownyException e) {
+				// ignored
+			}
 		}
 
 		list.add("isPublic=" + Boolean.toString(nation.isPublic()));
@@ -2016,6 +2072,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 		try {
 			list.add("town=" + townBlock.getTown().getName());
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 
 		// resident
@@ -2024,6 +2081,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 			try {
 				list.add("resident=" + townBlock.getResident().getName());
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 		}
 
@@ -2153,6 +2211,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 						try {
 							world.newTownBlock(x, z);
 						} catch (AlreadyRegisteredException e) {
+							// ignored
 						}
 						TownBlock townblock = world.getTownBlock(x, z);
 
@@ -2175,6 +2234,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 						}
 
 					} catch (NumberFormatException | NotRegisteredException e) {
+						// ignored
 					}
 				}
 			} catch (NotRegisteredException e) {
@@ -2383,6 +2443,7 @@ public class TownyFlatFileSource extends TownyDatabaseHandler {
 
 
 			} catch (EOFException e) {
+				// ignored
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {

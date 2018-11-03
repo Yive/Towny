@@ -21,8 +21,8 @@ import java.util.List;
 public class MobRemovalTimerTask extends TownyTimerTask {
 
 	private Server server;
-	public static List<Class<?>> classesOfWorldMobsToRemove = new ArrayList<Class<?>>();
-	public static List<Class<?>> classesOfTownMobsToRemove = new ArrayList<Class<?>>();
+	public static List<Class<?>> classesOfWorldMobsToRemove = new ArrayList<>();
+	public static List<Class<?>> classesOfTownMobsToRemove = new ArrayList<>();
 
 	public MobRemovalTimerTask(Towny plugin, Server server) {
 
@@ -44,7 +44,7 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 	@Override
 	public void run() {
 		// Build a list of mobs to be removed
-		List<LivingEntity> livingEntitiesToRemove = new ArrayList<LivingEntity>();
+		List<LivingEntity> livingEntitiesToRemove = new ArrayList<>();
 
 		for (World world : server.getWorlds()) {
 			TownyWorld townyWorld;

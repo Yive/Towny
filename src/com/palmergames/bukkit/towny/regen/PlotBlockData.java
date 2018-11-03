@@ -19,7 +19,7 @@ public class PlotBlockData {
 	private TownBlock townBlock;
 	private int x, z, size, height, version;
 
-	private List<Integer> blockList = new ArrayList<Integer>(); // Stores the original plot blocks
+	private List<Integer> blockList = new ArrayList<>(); // Stores the original plot blocks
 	private int blockListRestored; // counter for the next block to test
 
 	public PlotBlockData(TownBlock townBlock) {
@@ -50,8 +50,8 @@ public class PlotBlockData {
 	 */
 	private List<Integer> getBlockArr() {
 
-		List<Integer> list = new ArrayList<Integer>();
-		Block block = null;
+		List<Integer> list = new ArrayList<>();
+		Block block;
 
 		World world = this.townBlock.getWorldCoord().getBukkitWorld();
 		/*
@@ -88,7 +88,7 @@ public class PlotBlockData {
 	 */
 	public boolean restoreNextBlock() {
 
-		Block block = null;
+		Block block;
 		int x, y, z, blockId, reverse, scale;
 		int worldx = getX() * size, worldz = getZ() * size;
 		BlockObject storedData;
@@ -115,8 +115,8 @@ public class PlotBlockData {
 
 			reverse--; //regen bottom up to stand a better chance of restoring tree's and plants.
 			y = height - (reverse % height);
-			x = (int) (reverse / height) % size;
-			z = ((int) (reverse / height) / size) % size;
+			x = (reverse / height) % size;
+			z = ((reverse / height) / size) % size;
 
 			block = world.getBlockAt(worldx + x, y, worldz + z);
 			blockId = BukkitTools.getTypeId(block);
@@ -149,7 +149,7 @@ public class PlotBlockData {
 						}
 						
 					} catch (Exception e) {
-
+						// ignored
 					}
 
 				} else {

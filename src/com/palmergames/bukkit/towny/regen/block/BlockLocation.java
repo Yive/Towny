@@ -55,11 +55,7 @@ public class BlockLocation {
 	}
 
 	public boolean isLocation(Location loc) {
-
-		if ((loc.getWorld() == getWorld()) && (loc.getBlockX() == getX()) && (loc.getBlockY() == getY()) && (loc.getBlockZ() == getZ()))
-			return true;
-
-		return false;
+		return (loc.getWorld() == getWorld()) && (loc.getBlockX() == getX()) && (loc.getBlockY() == getY()) && (loc.getBlockZ() == getZ());
 	}
 
 //	public boolean isLocation(BlockLocation blockLocation) {

@@ -58,7 +58,7 @@ public class TownyFormatter {
 
 	public static List<String> getFormattedResidents(Town town) {
 
-		List<String> out = new ArrayList<String>();
+		List<String> out = new ArrayList<>();
 
 		String[] residents = getFormattedNames(town.getResidents().toArray(new Resident[0]));
 
@@ -220,7 +220,7 @@ public class TownyFormatter {
 	 */
 	public static List<String> getRanks(Town town) {
 
-		List<String> ranklist = new ArrayList<String>();
+		List<String> ranklist = new ArrayList<>();
 
 		String towntitle = getFormattedName(town);
 		towntitle += TownySettings.getLangString("rank_list_title");
@@ -229,7 +229,7 @@ public class TownyFormatter {
 
 		List<Resident> residents = town.getResidents();
 		List<String> townranks = TownyPerms.getTownRanks();
-		List<Resident> residentwithrank = new ArrayList<Resident>();
+		List<Resident> residentwithrank = new ArrayList<>();
 
 		for (String rank : townranks) {
 			for (Resident r : residents) {
@@ -252,7 +252,7 @@ public class TownyFormatter {
 	 */
 	public static List<String> formatStatusScreens(List<String> out) {
 		
-		List<String> formattedOut = new ArrayList<String>();
+		List<String> formattedOut = new ArrayList<>();
 		for (String line: out) {
 			if (line.length() > 80) {
 				int middle = (line.length()/2);
@@ -281,7 +281,7 @@ public class TownyFormatter {
 	 */
 	public static List<String> getStatus(Town town) {
 
-		List<String> out = new ArrayList<String>();
+		List<String> out = new ArrayList<>();
 
 		TownyWorld world = town.getWorld();
 
@@ -298,7 +298,7 @@ public class TownyFormatter {
 		} catch (NullPointerException e) {
 		}
 		// Created Date
-		Long registered= town.getRegistered();
+		long registered= town.getRegistered();
 		if (registered != 0) {
 			out.add(String.format(TownySettings.getLangString("status_founded"), registeredFormat.format(town.getRegistered())));
 		}

@@ -27,7 +27,7 @@ public class RepeatingTimerTask extends TownyTimerTask {
 		if (TownyRegenAPI.hasPlotChunks()) {
 			// only execute if the correct amount of time has passed.			
 			if (Math.max(1L, TownySettings.getPlotManagementSpeed()) <= ++timerCounter) {
-				for (PlotBlockData plotChunk : new ArrayList<PlotBlockData>(TownyRegenAPI.getPlotChunks().values())) {
+				for (PlotBlockData plotChunk : new ArrayList<>(TownyRegenAPI.getPlotChunks().values())) {
 					if (!plotChunk.restoreNextBlock()) {
 						TownyRegenAPI.deletePlotChunk(plotChunk);
 						TownyRegenAPI.deletePlotChunkSnapshot(plotChunk);
@@ -49,8 +49,6 @@ public class RepeatingTimerTask extends TownyTimerTask {
 
 				if (!plotChunk.getBlockList().isEmpty() && !(plotChunk.getBlockList() == null))
 					TownyRegenAPI.addPlotChunkSnapshot(plotChunk); // Save the snapshot.
-
-				plotChunk = null;
 
 				townBlock.setLocked(false);
 				TownyUniverse.getDataSource().saveTownBlock(townBlock);

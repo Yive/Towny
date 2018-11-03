@@ -56,7 +56,7 @@ public enum TownSpawnLevel {
 	private ConfigNodes isAllowingConfigNode, ecoPriceConfigNode;
 	private String permissionNode, notAllowedLangNode, notAllowedLangNodeWar, notAllowedLangNodePeace;
 
-	private TownSpawnLevel(ConfigNodes isAllowingConfigNode, String notAllowedLangNode, String notAllowedLangNodeWar, String notAllowedLangNodePeace, ConfigNodes ecoPriceConfigNode, String permissionNode) {
+	TownSpawnLevel(ConfigNodes isAllowingConfigNode, String notAllowedLangNode, String notAllowedLangNodeWar, String notAllowedLangNodePeace, ConfigNodes ecoPriceConfigNode, String permissionNode) {
 
 		this.isAllowingConfigNode = isAllowingConfigNode;
 		this.notAllowedLangNode = notAllowedLangNode;
@@ -83,19 +83,19 @@ public enum TownSpawnLevel {
 
 	public boolean isAllowed(Town town) {
 
-		return this == TownSpawnLevel.ADMIN ? true : isAllowedTown(town);
+		return this == TownSpawnLevel.ADMIN || isAllowedTown(town);
 	}
 
 	public boolean hasPermissionNode(Towny plugin, Player player, Town town) {
 
-		return this == TownSpawnLevel.ADMIN ? true : (plugin.isPermissions() && TownyUniverse.getPermissionSource().has(player, this.permissionNode)) || ((!plugin.isPermissions()) && (isAllowedTown(town)));
+		return this == TownSpawnLevel.ADMIN || (plugin.isPermissions() && TownyUniverse.getPermissionSource().has(player, this.permissionNode)) || ((!plugin.isPermissions()) && (isAllowedTown(town)));
 	}
 
 	private boolean isAllowedTown(Town town)
 	{
 		boolean war = TownyUniverse.isWarTime() || TownyWar.isUnderAttack(town);
 		SpawnLevel level = TownySettings.getSpawnLevel(this.isAllowingConfigNode);
-		return level == SpawnLevel.TRUE ? true : level == SpawnLevel.FALSE ? false : level == SpawnLevel.WAR ? war : !war;
+		return level == SpawnLevel.TRUE || (level!=SpawnLevel.FALSE && (level == SpawnLevel.WAR) == war);
 	}
 	
 	public double getCost() {

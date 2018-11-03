@@ -24,10 +24,10 @@ public class ConfirmationHandler {
 		ConfirmationHandler.plugin = plugin;
 	}
 
-	private static HashMap<Resident, Town> towndeleteconfirmations = new HashMap<Resident, Town>();
-	private static HashMap<Resident, Town> townunclaimallconfirmations = new HashMap<Resident, Town>();
-	private static HashMap<Resident, Nation> nationdeleteconfirmations = new HashMap<Resident, Nation>();
-	private static HashMap<Resident, Integer> townypurgeconfirmations = new HashMap<Resident, Integer>();
+	private static HashMap<Resident, Town> towndeleteconfirmations = new HashMap<>();
+	private static HashMap<Resident, Town> townunclaimallconfirmations = new HashMap<>();
+	private static HashMap<Resident, Nation> nationdeleteconfirmations = new HashMap<>();
+	private static HashMap<Resident, Integer> townypurgeconfirmations = new HashMap<>();
 
 	public static void addConfirmation(final Resident r, final ConfirmationType type, Object extra) throws TownyException {
 		// We use "extra" in certain instances like the number of days for something e.t.c
@@ -151,7 +151,6 @@ public class ConfirmationHandler {
 					TownyUniverse.getDataSource().removeNation(nationdeleteconfirmations.get(r));
 					TownyMessaging.sendGlobalMessage(TownySettings.getDelNationMsg(nationdeleteconfirmations.get(r)));
 					removeConfirmation(r,type, true);
-					return;
 				}
 			}
 		}

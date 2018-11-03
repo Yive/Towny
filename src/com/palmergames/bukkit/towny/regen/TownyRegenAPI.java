@@ -48,19 +48,19 @@ public class TownyRegenAPI {
 	}
 
 	// table containing snapshot data of active reversions.
-	private static Hashtable<String, PlotBlockData> PlotChunks = new Hashtable<String, PlotBlockData>();
+	private static Hashtable<String, PlotBlockData> PlotChunks = new Hashtable<>();
 
 	// List of all old plots still to be processed for Block removal
-	private static List<WorldCoord> deleteTownBlockIdQueue = new ArrayList<WorldCoord>();
+	private static List<WorldCoord> deleteTownBlockIdQueue = new ArrayList<>();
 
 	// A list of worldCoords which are needing snapshots
-	private static List<WorldCoord> worldCoords = new ArrayList<WorldCoord>();
+	private static List<WorldCoord> worldCoords = new ArrayList<>();
 	
 	// A holder for each protection regen task
-	private static  Hashtable<BlockLocation, ProtectionRegenTask> protectionRegenTasks = new Hashtable<BlockLocation, ProtectionRegenTask>();
+	private static  Hashtable<BlockLocation, ProtectionRegenTask> protectionRegenTasks = new Hashtable<>();
 	
 	// List of protection blocks placed to prevent blockPhysics.
-	private static  Set<Block> protectionPlaceholders = new HashSet<Block>();
+	private static  Set<Block> protectionPlaceholders = new HashSet<>();
 
 	/**
 	 * Add a TownBlocks WorldCoord for a snapshot to be taken.
@@ -389,7 +389,7 @@ public class TownyRegenAPI {
 	public static void doDeleteTownBlockIds(WorldCoord worldCoord) {
 
 		//Block block = null;
-		World world = null;
+		World world;
 		int plotSize = TownySettings.getTownBlockSize();
 
 		//TownyMessaging.sendDebugMsg("Processing deleteTownBlockIds");
@@ -417,7 +417,6 @@ public class TownyRegenAPI {
 						} catch (NotRegisteredException e) {
 							// Not a registered world
 						}
-						block = null;
 					}
 		}
 
@@ -455,7 +454,6 @@ public class TownyRegenAPI {
 						if (block.getType() == material) {
 							block.setType(Material.AIR);
 						}
-						block = null;
 					}
 		}
 	}

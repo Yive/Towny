@@ -29,8 +29,8 @@ public class HUDManager implements Listener{
 	
 	public HUDManager (Towny plugin) {
 		this.plugin = plugin;
-		warUsers = new ArrayList<Player>();
-		permUsers = new ArrayList<Player>();
+		warUsers = new ArrayList<>();
+		permUsers = new ArrayList<>();
 	}
 
 	//**TOGGLES**//
@@ -137,13 +137,17 @@ public class HUDManager implements Listener{
 				try {
 					if (new WorldCoord(p.getWorld().getName(), Coord.parseCoord(p)).getTownBlock().getTown() == e.getTown())
 						PermHUD.updatePerms(p);
-				} catch (Exception ex) {}
+				} catch (Exception ex) {
+					// ignored
+				}
 		else if (e.getTownBlock() != null)
 			for (Player p : permUsers)
 				try {
 					if (new WorldCoord(p.getWorld().getName(), Coord.parseCoord(p)).getTownBlock() == e.getTownBlock())
 						PermHUD.updatePerms(p);
-				} catch (Exception ex) {}
+				} catch (Exception ex) {
+					// ignored
+				}
 	}
 
 	//**UTILS**//

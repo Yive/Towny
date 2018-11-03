@@ -8,6 +8,7 @@ import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.EconomyException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
@@ -67,16 +68,14 @@ public class OnPlayerLogin implements Runnable {
 						town.addResident(resident);
 						TownyUniverse.getDataSource().saveTown(town);
 					} catch (NotRegisteredException ex) {
-					} catch (AlreadyRegisteredException ex) {
+						// ignored
 					}
 
 				TownyUniverse.getDataSource().saveResident(resident);
 				TownyUniverse.getDataSource().saveResidentList();
-				
-			} catch (AlreadyRegisteredException ex) {
-				// Should never happen
-			} catch (NotRegisteredException ex) {
-				// Should never happen
+
+			} catch (TownyException ex) {
+				// ignored
 			}
 
 		} else {
@@ -98,7 +97,7 @@ public class OnPlayerLogin implements Runnable {
 				TownyUniverse.getDataSource().saveResident(resident);
 				
 			} catch (NotRegisteredException ex) {
-				// Should never happen
+				// ignored
 			}
 		}
 
@@ -117,6 +116,7 @@ public class OnPlayerLogin implements Runnable {
 				}
 				resident.getTown(); // Exception check, this does not do anything at all!
 			} catch (NotRegisteredException ex) {
+				// ignored
 			}
 
 		if (TownyUniverse.isWarTime())

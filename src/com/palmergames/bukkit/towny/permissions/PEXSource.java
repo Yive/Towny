@@ -57,19 +57,19 @@ public class PEXSource extends TownyPermissionSource {
 
 		PermissionManager pexPM = PermissionsEx.getPermissionManager();
 
-		if (node == "prefix") {
+		if (node.equals("prefix")) {
 			group = pexPM.getUser(player).getPrefix(player.getWorld().getName());
 			user = pexPM.getUser(player).getOwnPrefix();
-		} else if (node == "suffix") {
+		} else if (node.equals("suffix")) {
 			group = pexPM.getUser(player).getSuffix(player.getWorld().getName());
 			user = pexPM.getUser(player).getOwnSuffix();
-		} else if (node == "userprefix") {
+		} else if (node.equals("userprefix")) {
 			user = pexPM.getUser(player).getOwnPrefix();					
-		} else if (node == "usersuffix") {
+		} else if (node.equals("usersuffix")) {
 			user = pexPM.getUser(player).getOwnSuffix();					
-		} else if (node == "groupprefix") {
+		} else if (node.equals("groupprefix")) {
 			group = pexPM.getUser(player).getGroups()[0].getOwnPrefix();
-		} else if (node == "groupsuffix") {
+		} else if (node.equals("groupsuffix")) {
 			group = pexPM.getUser(player).getGroups()[0].getOwnSuffix();
 		}
 		if (group == null)
@@ -105,10 +105,11 @@ public class PEXSource extends TownyPermissionSource {
 
 		try {
 			iReturn =  Integer.parseInt(result);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+			// ignored
+		}
 		
-		if (iReturn == -1)
-			iReturn = getEffectivePermIntNode(playerName, node);
+		if (iReturn == -1) iReturn = getEffectivePermIntNode(playerName, node);
 		
 		return iReturn;
 
@@ -128,10 +129,11 @@ public class PEXSource extends TownyPermissionSource {
 
 		try {
 			iReturn =  Integer.parseInt(result);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+			// ignored
+		}
 		
-		if (iReturn == -1)
-			iReturn = getEffectivePermIntNode(playerName, node);
+		if (iReturn == -1) iReturn = getEffectivePermIntNode(playerName, node);
 		
 		return iReturn;
 	}
@@ -152,8 +154,7 @@ public class PEXSource extends TownyPermissionSource {
 
 		//return pexPM.getUser(player).getOptionInteger(node, worldName, -1);
 		String result = pexPM.getUser(player).getOption(node, worldName);
-		if (result != null)
-			return result;
+		if (result != null) return result;
 
 		return "";
 
@@ -197,13 +198,12 @@ public class PEXSource extends TownyPermissionSource {
 		@EventHandler(priority = EventPriority.HIGH)
 		public void onPermissionEntityEvent(PermissionEntityEvent event) {
 
-			Resident resident = null;
-			Player player = null;
+			Resident resident;
+			Player player;
 
 			try {
 				if (PermissionEventEnums.PEXEntity_Action.valueOf(event.getEventName()) != null) {
-					PermissionEntityEvent EntityEvent = (PermissionEntityEvent) event;
-					PermissionEntity entity = EntityEvent.getEntity();
+					PermissionEntity entity = event.getEntity();
 					if (entity instanceof PermissionGroup) {
 						PermissionGroup group = (PermissionGroup) entity;
 
@@ -221,7 +221,7 @@ public class PEXSource extends TownyPermissionSource {
 					} else if (entity instanceof PermissionUser) {
 
 						try {
-							resident = TownyUniverse.getDataSource().getResident(((PermissionUser) entity).getName());
+							resident = TownyUniverse.getDataSource().getResident(entity.getName());
 							player = BukkitTools.getPlayerExact(resident.getName());
 							if (player != null) {
 								//setup default modes for this player.
@@ -230,6 +230,7 @@ public class PEXSource extends TownyPermissionSource {
 								plugin.resetCache(player);
 							}
 						} catch (NotRegisteredException x) {
+							// ignored
 						}
 					}
 				}

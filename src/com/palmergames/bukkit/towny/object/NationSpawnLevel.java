@@ -68,19 +68,19 @@ public enum NationSpawnLevel {
 
 	public boolean isAllowed(Nation nation) {
 
-		return this == NationSpawnLevel.ADMIN ? true : isAllowedNation(nation);
+		return this == NationSpawnLevel.ADMIN|| isAllowedNation(nation);
 	}
 
 	public boolean hasPermissionNode(Towny plugin, Player player, Nation nation) {
 
-		return this == NationSpawnLevel.ADMIN ? true : (plugin.isPermissions() && TownyUniverse.getPermissionSource().has(player, this.permissionNode)) || ((!plugin.isPermissions()) && (isAllowedNation(nation)));
+		return this == NationSpawnLevel.ADMIN || (plugin.isPermissions() && TownyUniverse.getPermissionSource().has(player, this.permissionNode)) || ((!plugin.isPermissions()) && (isAllowedNation(nation)));
 	}
 	
 	private boolean isAllowedNation(Nation nation)
 	{
 		boolean war = TownyUniverse.isWarTime();
 		NSpawnLevel level = TownySettings.getNSpawnLevel(this.isAllowingConfigNode);
-		return level == NSpawnLevel.TRUE ? true : level == NSpawnLevel.FALSE ? false : level == NSpawnLevel.WAR ? war : !war;
+		return level == NSpawnLevel.TRUE || (level!=NSpawnLevel.FALSE && ((level == NSpawnLevel.WAR) == war));
 	}
 
 	public double getCost() {

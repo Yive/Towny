@@ -253,11 +253,11 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 		}
 		
 		Player player = (Player) sender;
-		World world = null;
-		Double x = null;
-		Double y = 1.0;
-		Double z = null;
-		Location loc = null;
+		World world;
+		double x;
+		double y = 1.0;
+		double z;
+		Location loc;
 		if (Bukkit.getServer().getWorld(split[0]) != null ) {
 			world =  Bukkit.getServer().getWorld(split[0]);
 			x = Double.parseDouble(split[1]) * TownySettings.getTownBlockSize();			
@@ -286,10 +286,6 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 				town.setBonusBlocks(town.getBonusBlocks() + Integer.parseInt(split[1].trim()));
 				TownyMessaging.sendMsg(getSender(), String.format(TownySettings.getLangString("msg_give_total"), town.getName(), split[1], town.getBonusBlocks()));
 				TownyMessaging.sendTownMessagePrefixed(town, "You have been given " + Integer.parseInt(split[1].trim()) + " bonus townblocks.");
-				if (isConsole) {
-					TownyMessaging.sendTownMessagePrefixed(town, "If you have paid any real-life money for these townblocks please understand: the creators of Towny do not condone this transaction, the server you play on breaks the Minecraft EULA and, worse, is selling a part of Towny which your server admin did not create.");
-					TownyMessaging.sendTownMessagePrefixed(town, "You should consider changing servers and requesting a refund of your money.");
-				}
 			} catch (NumberFormatException nfe) {
 				throw new TownyException(TownySettings.getLangString("msg_error_must_be_int"));
 			}
@@ -353,7 +349,6 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 			} catch (TownyException x) {
 				TownyMessaging.sendErrorMsg(player, x.getMessage());
-				return;
 			}
 		}
 	}
@@ -384,9 +379,6 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 				} else
 					TownyMessaging.sendErrorMsg(getSender(), TownySettings.getLangString("msg_invalid_name"));
 			}
-
-		} catch (NotRegisteredException e) {
-			TownyMessaging.sendErrorMsg(getSender(), e.getMessage());
 		} catch (TownyException e) {	
 			TownyMessaging.sendErrorMsg(getSender(), e.getMessage());
 		}
@@ -477,8 +469,6 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 				parseAdminTownRankCommand(player, town, StringMgmt.remArgs(split, 2));
 			}
 
-		} catch (NotRegisteredException e) {
-			TownyMessaging.sendErrorMsg(getSender(), e.getMessage());
 		} catch (TownyException e) {
 			TownyMessaging.sendErrorMsg(getSender(), e.getMessage());
 		}
@@ -557,7 +547,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 		
 	}
 
-	public void parseAdminNationCommand(String[] split) throws TownyException {
+	public void parseAdminNationCommand(String[] split) {
 
 		if (split.length == 0 || split[0].equalsIgnoreCase("?")) {
 
@@ -601,9 +591,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 					TownyMessaging.sendErrorMsg(getSender(), TownySettings.getLangString("msg_invalid_name"));
 			}
 
-		} catch (NotRegisteredException e) {
-			TownyMessaging.sendErrorMsg(getSender(), e.getMessage());
-		} catch (AlreadyRegisteredException e) {
+		} catch (TownyException e) {
 			TownyMessaging.sendErrorMsg(getSender(), e.getMessage());
 		}
 	}
@@ -639,7 +627,7 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 			} else
 				try {
-					Resident newMayor = null;
+					Resident newMayor;
 					Town town = TownyUniverse.getDataSource().getTown(split[1]);
 
 					if (split[2].equalsIgnoreCase("npc")) {
@@ -832,7 +820,6 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			}
 		} else {
 			TownyMessaging.sendErrorMsg(getSender(), String.format(TownySettings.getLangString("msg_err_invalid_property"), "administrative"));
-			return;
 		}
 	}
 
@@ -942,7 +929,6 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 			} catch (TownyException x) {
 				// Admin only escape
 				TownyMessaging.sendErrorMsg(player, x.getMessage());
-				return;
 			}
 	}
 
@@ -985,7 +971,6 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 			} catch (Exception e) {
 				TownyMessaging.sendErrorMsg(getSender(), TownySettings.getLangString("msg_err_invalid_choice"));
-				return;
 			}
 
 		} else if (split[0].equalsIgnoreCase("devmode")) {

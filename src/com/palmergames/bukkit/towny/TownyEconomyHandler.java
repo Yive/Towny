@@ -1,7 +1,5 @@
 package com.palmergames.bukkit.towny;
 
-import com.iConomy.iConomy;
-import com.iConomy.system.Account;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.tnemc.core.Reserve;
@@ -20,7 +18,6 @@ import java.math.BigDecimal;
  * 
  */
 public class TownyEconomyHandler {
-
 	private static Towny plugin = null;
 	
 	private static Economy vaultEconomy = null;
@@ -32,7 +29,7 @@ public class TownyEconomyHandler {
 	private static String version = "";
 
 	public enum EcoType {
-		NONE, ICO5, VAULT, RESERVE
+		NONE, VAULT, RESERVE
 	}
 
 	public static void initialize(Towny plugin) {
@@ -83,23 +80,7 @@ public class TownyEconomyHandler {
 	 */
 	public static Boolean setupEconomy() {
 
-		Plugin economyProvider = null;
-
-		/*
-		 * Test for native iCo5 support
-		 */
-		economyProvider = plugin.getServer().getPluginManager().getPlugin("iConomy");
-
-		if (economyProvider != null) {
-			/*
-			 * Flag as using native iCo5 hooks
-			 */
-			if (economyProvider.getDescription().getVersion().matches("5.01")) {
-				setVersion(String.format("%s v%s", "iConomy", economyProvider.getDescription().getVersion()));
-				Type = EcoType.ICO5;
-				return true;
-			}
-		}
+		Plugin economyProvider;
 
 
 		/*
@@ -149,9 +130,6 @@ public class TownyEconomyHandler {
 
 		switch (Type) {
 
-		case ICO5:
-			return iConomy.getAccount(accountName);
-
 		case RESERVE:
 			if(reserveEconomy instanceof ExtendedEconomyAPI)
 				return ((ExtendedEconomyAPI)reserveEconomy).getAccount(accountName);
@@ -175,9 +153,6 @@ public class TownyEconomyHandler {
 
 		switch (Type) {
 
-		case ICO5:
-			return iConomy.hasAccount(accountName);
-
 		case RESERVE:
 		  return reserveEconomy.hasAccount(accountName);
 			
@@ -200,10 +175,6 @@ public class TownyEconomyHandler {
 		try {
 			switch (Type) {
 
-			case ICO5:
-				iConomy.getAccount(accountName).remove();
-				break;
-
 			case RESERVE:
 				reserveEconomy.deleteAccount(accountName);
 				break;
@@ -224,8 +195,6 @@ public class TownyEconomyHandler {
 
 		} catch (NoClassDefFoundError e) {
 		}
-
-		return;
 	}
 
 	/**
@@ -237,12 +206,6 @@ public class TownyEconomyHandler {
 	public static double getBalance(String accountName, World world) {
 
 		switch (Type) {
-
-		case ICO5:
-			Account icoAccount = (Account) getEconomyAccount(accountName);
-			if (icoAccount != null)
-				return icoAccount.getHoldings().balance();
-			break;
 
 		case RESERVE:
 			if (!reserveEconomy.hasAccount(accountName))
@@ -290,14 +253,6 @@ public class TownyEconomyHandler {
 
 		switch (Type) {
 
-		case ICO5:
-			Account icoAccount = (Account) getEconomyAccount(accountName);
-			if (icoAccount != null) {
-				icoAccount.getHoldings().subtract(amount);
-				return true;
-			}
-			break;
-
 		case RESERVE:
 			if (!reserveEconomy.hasAccount(accountName))
 				reserveEconomy.createAccount(accountName);
@@ -329,14 +284,6 @@ public class TownyEconomyHandler {
 
 		switch (Type) {
 
-		case ICO5:
-			Account icoAccount = (Account) getEconomyAccount(accountName);
-			if (icoAccount != null) {
-				icoAccount.getHoldings().add(amount);
-				return true;
-			}
-			break;
-
 		case RESERVE:
 			if (!reserveEconomy.hasAccount(accountName))
 				reserveEconomy.createAccount(accountName);
@@ -360,14 +307,6 @@ public class TownyEconomyHandler {
 	public static boolean setBalance(String accountName, Double amount, World world) {
 
 		switch (Type) {
-
-		case ICO5:
-			Account icoAccount = (Account) getEconomyAccount(accountName);
-			if (icoAccount != null) {
-				icoAccount.getHoldings().set(amount);
-				return true;
-			}
-			break;
 
 		case RESERVE:
 			if (!reserveEconomy.hasAccount(accountName))
@@ -398,9 +337,6 @@ public class TownyEconomyHandler {
 
 		try {
 			switch (Type) {
-
-			case ICO5:
-				return iConomy.format(balance);
 
 			case RESERVE:
 				return reserveEconomy.format(new BigDecimal(balance));

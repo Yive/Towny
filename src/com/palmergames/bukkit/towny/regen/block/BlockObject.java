@@ -16,13 +16,11 @@ public class BlockObject {
 	public BlockObject(int typeId) {
 
 		this.typeId = typeId;
-		this.data = 0;
 	}
 	
 	public BlockObject(int typeId, Location loc) {
 
 		this.typeId = typeId;
-		this.data = 0;
 		setLocation(loc);
 	}
 

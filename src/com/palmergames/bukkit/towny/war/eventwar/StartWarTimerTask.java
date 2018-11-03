@@ -16,7 +16,6 @@ public class StartWarTimerTask extends TownyTimerTask {
 	public void run() {
         if (!TownySettings.isUsingEconomy()) {
         	TownyMessaging.sendErrorMsg("War Event cannot function while using_economy: false in the config.yml. Economy Required.");
-        	return;
         } else {
         	universe.getWarEvent().start();
         }

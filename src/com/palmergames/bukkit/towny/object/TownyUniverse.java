@@ -69,7 +69,7 @@ public class TownyUniverse extends TownyObject {
 	private static War warEvent;
 	private String rootFolder;
 
-	public void onLogin(Player player) throws AlreadyRegisteredException, NotRegisteredException {
+	public void onLogin(Player player) {
 
 		if (!player.isOnline())
 			return;
@@ -94,6 +94,7 @@ public class TownyUniverse extends TownyObject {
 			resident.setLastOnline(System.currentTimeMillis());
 			getDataSource().saveResident(resident);
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 		setChangedNotify(PLAYER_LOGOUT);
 	}
@@ -444,7 +445,7 @@ public class TownyUniverse extends TownyObject {
 
 	public static boolean isWarTime() {
 
-		return warEvent != null ? warEvent.isWarTime() : false;
+		return warEvent != null && warEvent.isWarTime();
 	}
 
 	public void startWarEvent() {

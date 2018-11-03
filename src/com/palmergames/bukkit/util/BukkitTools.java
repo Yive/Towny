@@ -153,7 +153,7 @@ public class BukkitTools {
 	 */
 	public static HashMap<String, Integer> getPlayersPerWorld() {
 
-		HashMap<String, Integer> m = new HashMap<String, Integer>();
+		HashMap<String, Integer> m = new HashMap<>();
 		for (World world : getServer().getWorlds())
 			m.put(world.getName(), 0);
 		for (Player player :  getServer().getOnlinePlayers())
@@ -304,7 +304,7 @@ public class BukkitTools {
 	 */
 	public static List<String> getWhiteListedUsers() {
 
-		List<String> names = new ArrayList<String>();
+		List<String> names = new ArrayList<>();
 		try {
 			BufferedReader fin = new BufferedReader(new FileReader("white-list.txt"));
 

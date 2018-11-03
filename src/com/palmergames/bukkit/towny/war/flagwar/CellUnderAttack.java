@@ -38,8 +38,8 @@ public class CellUnderAttack extends Cell {
 
 	public void loadBeacon() {
 
-		beaconFlagBlocks = new ArrayList<Block>();
-		beaconWireframeBlocks = new ArrayList<Block>();
+		beaconFlagBlocks = new ArrayList<>();
+		beaconWireframeBlocks = new ArrayList<>();
 
 		if (!TownyWarConfig.isDrawingBeacon())
 			return;

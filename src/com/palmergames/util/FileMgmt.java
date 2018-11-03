@@ -143,7 +143,7 @@ public class FileMgmt {
 
 			char[] buffer = new char[1024];
 			try {
-				Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+				Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 				int n;
 				while ((n = reader.read(buffer)) != -1) {
 					writer.write(buffer, 0, n);

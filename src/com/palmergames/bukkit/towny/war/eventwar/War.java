@@ -240,15 +240,7 @@ public class War {
 		
 		// Toggle the war huds off for all players (This method is called from an async task so 
 		// we create a sync task to use the scoreboard api)
-		new BukkitRunnable() {
-
-			@Override
-			public void run() {
-				plugin.getHUDManager().toggleAllWarHUD();
-			}
-			
-		}.runTask(plugin);
-		
+		Bukkit.getScheduler().runTask(plugin, () -> plugin.getHUDManager().toggleAllWarHUD());
 
 		double halfWinnings;
 		try {
@@ -338,7 +330,7 @@ public class War {
 	 */
 	public void townScored(Town defenderTown,  Town attackerTown, Player defenderPlayer, Player attackerPlayer, int n)
 	{
-		String[] pointMessage = {"error"};
+		String[] pointMessage;
 		TownBlock deathLoc = TownyUniverse.getTownBlock(defenderPlayer.getLocation());
 		if (deathLoc == null)
 			pointMessage = TownySettings.getWarTimeScorePlayerKillMsg(attackerPlayer, defenderPlayer, n, attackerTown);
@@ -499,20 +491,16 @@ public class War {
 		if (!TownySettings.getPlotsFireworkOnAttacked()) {
 			return;
 		}
-		
-		BukkitTools.scheduleSyncDelayedTask(new Runnable() { 
-
-			public void run() {
-				double x = (double)townblock.getX() * Coord.getCellSize() + Coord.getCellSize()/2.0;
-				double z = (double)townblock.getZ() * Coord.getCellSize() + Coord.getCellSize()/2.0;
-				double y = atPlayer.getLocation().getY() + 20;
-				Firework firework = atPlayer.getWorld().spawn(new Location(atPlayer.getWorld(), x, y, z), Firework.class);
-				FireworkMeta data = (FireworkMeta) firework.getFireworkMeta();
-				data.addEffects(FireworkEffect.builder().withColor(c).with(type).trail(false).build());
-				firework.setFireworkMeta(data);            
-				firework.detonate();
-			}
-		}, 0);	
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+			double x = (double)townblock.getX() * Coord.getCellSize() + Coord.getCellSize()/2.0;
+			double z = (double)townblock.getZ() * Coord.getCellSize() + Coord.getCellSize()/2.0;
+			double y = atPlayer.getLocation().getY() + 20;
+			Firework firework = atPlayer.getWorld().spawn(new Location(atPlayer.getWorld(), x, y, z), Firework.class);
+			FireworkMeta data = firework.getFireworkMeta();
+			data.addEffects(FireworkEffect.builder().withColor(c).with(type).trail(false).build());
+			firework.setFireworkMeta(data);
+			firework.detonate();
+		});
 	}
 
 	private void remove(Town attacker, TownBlock townBlock) throws NotRegisteredException {
@@ -571,7 +559,7 @@ public class War {
 		TownyUniverse.getDataSource().saveTown(attacker);
 	}
 
-	public void remove(Town attacker, Nation nation) throws NotRegisteredException {
+	public void remove(Town attacker, Nation nation) {
 
 		townScored(attacker, TownySettings.getWarPointsForNation(), nation, 0);
 		warringNations.remove(nation);
@@ -581,7 +569,7 @@ public class War {
 		checkEnd();
 	}
 
-	public void remove(Town attacker, Town town) throws NotRegisteredException {
+	public void remove(Town attacker, Town town) {
 
 		int fallenTownBlocks = 0;
 		warringTowns.remove(town);
@@ -681,7 +669,7 @@ public class War {
 
 	public List<String> getStats() {
 
-		List<String> output = new ArrayList<String>();
+		List<String> output = new ArrayList<>();
 		output.add(ChatTools.formatTitle("War Stats"));
 		output.add(Colors.Green + "  Nations: " + Colors.LightGreen + warringNations.size());
 		output.add(Colors.Green + "  Towns: " + Colors.LightGreen + warringTowns.size() + " / " + townScores.size());
@@ -709,9 +697,9 @@ public class War {
 	 */
 	public List<String> getScores(int maxListing) {
 
-		List<String> output = new ArrayList<String>();
+		List<String> output = new ArrayList<>();
 		output.add(ChatTools.formatTitle("War - Top Scores"));
-		KeyValueTable<Town, Integer> kvTable = new KeyValueTable<Town, Integer>(townScores);
+		KeyValueTable<Town, Integer> kvTable = new KeyValueTable<>(townScores);
 		kvTable.sortByValue();
 		kvTable.reverse();
 		int n = 0;
@@ -719,8 +707,8 @@ public class War {
 			n++;
 			if (maxListing != -1 && n > maxListing)
 				break;
-			Town town = (Town) kv.key;
-			int score = (Integer) kv.value;
+			Town town = kv.key;
+			int score = kv.value;
 			if (score > 0)
 				output.add(String.format(Colors.Blue + "%40s " + Colors.Gold + "|" + Colors.LightGray + " %4d", TownyFormatter.getFormattedName(town), score));
 		}
@@ -728,7 +716,7 @@ public class War {
 	}
 
 	public String[] getTopThree() {
-		KeyValueTable<Town, Integer> kvTable = new KeyValueTable<Town, Integer>(townScores);
+		KeyValueTable<Town, Integer> kvTable = new KeyValueTable<>(townScores);
 		kvTable.sortByValue();
 		kvTable.reverse();
 		String[] top = new String[3];
@@ -740,7 +728,7 @@ public class War {
 
 	public KeyValue<Town, Integer> getWinningTownScore() throws TownyException {
 
-		KeyValueTable<Town, Integer> kvTable = new KeyValueTable<Town, Integer>(townScores);
+		KeyValueTable<Town, Integer> kvTable = new KeyValueTable<>(townScores);
 		kvTable.sortByValue();
 		kvTable.reverse();
 		if (kvTable.getKeyValues().size() > 0)

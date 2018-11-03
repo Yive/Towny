@@ -154,6 +154,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 						Resident resident = TownyUniverse.getDataSource().getResident(player.getName());
 						town = resident.getTown();
 					} catch (NotRegisteredException e) {
+						// ignored
 					}
 
 				for (String line : getTownyPrices(town))
@@ -219,6 +220,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 				try {
 					parseWarParticipants(p, args);
 				} catch (NotRegisteredException e) {
+					// ignored
 				}
 				return true;
 			}
@@ -243,10 +245,10 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 		List<Nation> nationsToSort = War.warringNations;
 		int page = 1;
 		List<String> output = new ArrayList<>();
-		String nationLine = null;
-		String townLine = null;
+		String nationLine;
+		String townLine;
 		for (Nation nations : nationsToSort) {
-			nationLine = Colors.Gold + "-" + nations.getName().toString();
+			nationLine = Colors.Gold + "-" + nations.getName();
 			if (TownyUniverse.getDataSource().getResident(player.getName()).hasNation())
 				if (TownyUniverse.getDataSource().getResident(player.getName()).getTown().getNation().hasEnemy(nations))
 					nationLine += Colors.Red + " (Enemy)";
@@ -255,7 +257,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 			output.add(nationLine);
 			for (Town towns : townsToSort) {
 				if (towns.getNation().equals(nations)) {
-					townLine = Colors.Blue + "  -" + towns.getName().toString();
+					townLine = Colors.Blue + "  -" + towns.getName();
 					if (towns.isCapital())
 						townLine += Colors.LightBlue + " (Capital)";
 					output.add(townLine);

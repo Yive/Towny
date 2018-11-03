@@ -1,6 +1,5 @@
 package com.palmergames.bukkit.towny.permissions;
 
-import org.anjocaido.groupmanager.GroupManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -27,7 +26,6 @@ public abstract class TownyPermissionSource {
 	protected TownySettings settings;
 	protected Towny plugin;
 
-	protected GroupManager groupManager = null;
 	protected PermissionsEx pex = null;
 
 	abstract public String getPrefixSuffix(Resident resident, String node);
@@ -56,6 +54,7 @@ public abstract class TownyPermissionSource {
 				try {
 					return Integer.parseInt(split[split.length - 1]);
 				} catch (NumberFormatException e) {
+					// ignored
 				}
 			}
 		}
@@ -182,17 +181,13 @@ public abstract class TownyPermissionSource {
 			 *  or
 			 * the player has an All town Override
 			 */
-			if (hasBlock || hasAllTownOverride(player, material, action))
-				return true;
+			return hasBlock || hasAllTownOverride(player, material, action);
 
 		} else {
 
 			// Allow ops all access when no permissions
-			if (isTownyAdmin(player))
-				return true;
+			return isTownyAdmin(player);
 		}
-
-		return false;
 	}
 
 	/**
@@ -227,17 +222,13 @@ public abstract class TownyPermissionSource {
 			 *  or
 			 * the player has an All town Override
 			 */
-			if (hasBlock || hasOwnTownOverride(player, material, action) || hasAllTownOverride(player, material, action))
-				return true;
+			return hasBlock || hasOwnTownOverride(player, material, action) || hasAllTownOverride(player, material, action);
 
 		} else {
 
 			// Allow ops all access when no permissions
-			if (isTownyAdmin(player))
-				return true;
+			return isTownyAdmin(player);
 		}
-
-		return false;
 	}
 
 	/**
@@ -269,17 +260,13 @@ public abstract class TownyPermissionSource {
 			 *  or
 			 * the player has the block permission and the data node isn't registered
 			 */
-			if (hasBlock)
-				return true;
+			return hasBlock;
 
 		} else {
 
 			// Allow ops all access when no permissions
-			if (isTownyAdmin(player))
-				return true;
+			return isTownyAdmin(player);
 		}
-
-		return false;
 	}	
 
 	public boolean isTownyAdmin(Player player) {
@@ -290,10 +277,8 @@ public abstract class TownyPermissionSource {
 
 	public boolean testPermission(Player player, String perm) {
 
-		if (!TownyUniverse.getPermissionSource().isTownyAdmin(player) && (!has(player, perm)))
-			return false;
+		return !TownyUniverse.getPermissionSource().isTownyAdmin(player) && (!has(player, perm));
 
-		return true;
 	}
 
 	/**
@@ -307,16 +292,14 @@ public abstract class TownyPermissionSource {
 	 */
 	public boolean has(Player player, String node) {
 
-		if (player.isOp())
-			return true;
+		if (player.isOp()) return true;
 
 		//return (plugin.isPermissions() && hasPermission(player, node));
 
 		/*
 		 * Node has been set or negated so return the actual value
 		 */
-		if (player.isPermissionSet(node))
-			return player.hasPermission(node);
+		if (player.isPermissionSet(node)) return player.hasPermission(node);
 
 		/*
 		 * Check for a parent with a wildcard
@@ -325,12 +308,8 @@ public abstract class TownyPermissionSource {
 		final StringBuilder builder = new StringBuilder(node.length());
 		for (String part : parts) {
 			builder.append('*');
-			if (player.hasPermission("-" + builder.toString())) {
-				return false;
-			}
-			if (player.hasPermission(builder.toString())) {
-				return true;
-			}
+			if (player.hasPermission("-" + builder.toString())) return false;
+			if (player.hasPermission(builder.toString())) return true;
 			builder.deleteCharAt(builder.length() - 1);
 			builder.append(part).append('.');
 		}
@@ -392,8 +371,7 @@ public abstract class TownyPermissionSource {
 			 *  or
 			 * the player has the block permission and the data node isn't registered
 			 */
-			if ((hasData && dataRegistered) || (hasBlock && !dataRegistered))
-				return true;
+			if ((hasData && dataRegistered) || (hasBlock && !dataRegistered)) return true;
 
 			// No node set but we are using permissions so check world settings
 			// (without UnclaimedIgnoreId's).
@@ -465,17 +443,14 @@ public abstract class TownyPermissionSource {
 			 *  or
 			 * the player has an All town Override
 			 */
-			if ((hasData && dataRegistered) || (hasBlock && !dataRegistered) || hasAllTownOverride(player, blockId, data, action))
-				return true;
+			return (hasData && dataRegistered) || (hasBlock && !dataRegistered) || hasAllTownOverride(player, blockId, data, action);
 
 		} else {
 
 			// Allow ops all access when no permissions
-			if (isTownyAdmin(player))
-				return true;
+			return isTownyAdmin(player);
 		}
 
-		return false;
 	}
 	
 	/**
@@ -512,17 +487,13 @@ public abstract class TownyPermissionSource {
 			 *  or
 			 * the player has an All town Override
 			 */
-			if ((hasData && dataRegistered) || (hasBlock && !dataRegistered) || hasOwnTownOverride(player, blockId, data, action) || hasAllTownOverride(player, blockId, data, action))
-				return true;
+			return (hasData && dataRegistered) || (hasBlock && !dataRegistered) || hasOwnTownOverride(player, blockId, data, action) || hasAllTownOverride(player, blockId, data, action);
 
 		} else {
 
 			// Allow ops all access when no permissions
-			if (isTownyAdmin(player))
-				return true;
+			return isTownyAdmin(player);
 		}
-
-		return false;
 	}
 	
 	/**
@@ -556,17 +527,13 @@ public abstract class TownyPermissionSource {
 			 *  or
 			 * the player has the block permission and the data node isn't registered
 			 */
-			if ((hasData && dataRegistered) || (hasBlock && !dataRegistered))
-				return true;
+			return (hasData && dataRegistered) || (hasBlock && !dataRegistered);
 
 		} else {
 
 			// Allow ops all access when no permissions
-			if (isTownyAdmin(player))
-				return true;
+			return isTownyAdmin(player);
 		}
-
-		return false;
 	}
 
 }

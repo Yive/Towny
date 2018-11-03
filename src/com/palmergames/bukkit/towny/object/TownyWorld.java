@@ -169,11 +169,13 @@ public class TownyWorld extends TownyObject {
 			if (townBlock.hasResident())
 				townBlock.getResident().removeTownBlock(townBlock);
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 		try {
 			if (townBlock.hasTown())
 				townBlock.getTown().removeTownBlock(townBlock);
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 
 		removeTownBlock(townBlock.getCoord());
@@ -195,12 +197,7 @@ public class TownyWorld extends TownyObject {
 
 		List<String> out = new ArrayList<>();
 		out.add(getTreeDepth(depth) + "World (" + getName() + ")");
-		out.add(getTreeDepth(depth + 1) + "TownBlocks (" + getTownBlocks().size() + "): " /*
-																						 * +
-																						 * getTownBlocks
-																						 * (
-																						 * )
-																						 */);
+		out.add(getTreeDepth(depth + 1) + "TownBlocks (" + getTownBlocks().size() + "): ");
 		return out;
 	}
 
@@ -545,7 +542,7 @@ public class TownyWorld extends TownyObject {
 
 	public boolean isUnclaimedZoneIgnoreMaterial(Material mat) {
 
-		return getUnclaimedZoneIgnoreMaterials().contains(mat);
+		return getUnclaimedZoneIgnoreMaterials().contains(mat.toString());
 	}
 
 
@@ -675,6 +672,7 @@ public class TownyWorld extends TownyObject {
 				if (dist < min)
 					min = dist;
 			} catch (TownyException e) {
+				// ignored
 			}
 
 		return (int) Math.ceil(min);
@@ -715,6 +713,7 @@ public class TownyWorld extends TownyObject {
 						min = dist;
 				}
 			} catch (TownyException e) {
+				// ignored
 			}
 
 		return (int) Math.ceil(min);

@@ -185,7 +185,7 @@ public class TownyTimerHandler{
 	 */
 	public static Long townyTime() {
 
-		Long secondsInDay = TownySettings.getDayInterval();
+		long secondsInDay = TownySettings.getDayInterval();
 
 		// Get Calendar instance
 		Calendar now = Calendar.getInstance();
@@ -194,10 +194,10 @@ public class TownyTimerHandler{
 		TimeZone timeZone = now.getTimeZone();
 		
 		// Get current system time in milliseconds
-		Long timeMilli = System.currentTimeMillis();
+		long timeMilli = System.currentTimeMillis();
 		
 		// Calculate the TimeZone specific offset (including DST)
-		Integer timeOffset = timeZone.getOffset(timeMilli)/1000;
+		int timeOffset = timeZone.getOffset(timeMilli)/1000;
 
 		return (secondsInDay + (TownySettings.getNewDayTime() - ((timeMilli/1000) % secondsInDay) - timeOffset)) % secondsInDay;
 	}

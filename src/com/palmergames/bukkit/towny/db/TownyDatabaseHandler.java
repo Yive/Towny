@@ -101,6 +101,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			try {
 				matches.add(getResident(name));
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 		return matches;
 	}
@@ -117,6 +118,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		try {
 			name = NameValidation.checkAndFilterPlayerName(name).toLowerCase();
 		} catch (InvalidNameException e) {
+			// ignored
 		}
 
 		if (!hasResident(name)) {
@@ -144,6 +146,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			try {
 				matches.add(getTown(name));
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 		return matches;
 	}
@@ -160,6 +163,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		try {
 			name = NameValidation.checkAndFilterName(name).toLowerCase();
 		} catch (InvalidNameException e) {
+			// ignored
 		}
 
 		if (!hasTown(name))
@@ -184,6 +188,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		try {
 			name = NameValidation.checkAndFilterName(name).toLowerCase();
 		} catch (InvalidNameException e) {
+			// ignored
 		}
 
 		return universe.getTownsMap().get(name);
@@ -197,6 +202,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			try {
 				matches.add(getNation(name));
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 		return matches;
 	}
@@ -213,6 +219,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		try {
 			name = NameValidation.checkAndFilterName(name).toLowerCase();
 		} catch (InvalidNameException e) {
+			// ignored
 		}
 
 		if (!hasNation(name))
@@ -237,6 +244,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		try {
 			name = NameValidation.checkAndFilterName(name).toLowerCase();
 		} catch (InvalidNameException e) {
+			// ignored
 		}
 		
 		return universe.getNationsMap().get(name);
@@ -326,10 +334,12 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		try {
 			resident = townBlock.getResident();
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 		try {
 			town = townBlock.getTown();
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 		
 		
@@ -449,9 +459,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 	}
 
 	@Override
-	public void newWorld(String name) throws AlreadyRegisteredException, NotRegisteredException {
-
-		String filteredName = name;
+	public void newWorld(String name) throws AlreadyRegisteredException {
 		/*
 		 * try {
 		 * filteredName = checkAndFilterName(name);
@@ -459,10 +467,10 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		 * throw new NotRegisteredException(e.getMessage());
 		 * }
 		 */
-		if (universe.getWorldMap().containsKey(filteredName.toLowerCase()))
-			throw new AlreadyRegisteredException("The world " + filteredName + " is already in use.");
+		if (universe.getWorldMap().containsKey(name.toLowerCase()))
+			throw new AlreadyRegisteredException("The world " + name + " is already in use.");
 
-		universe.getWorldMap().put(filteredName.toLowerCase(), new TownyWorld(filteredName));
+		universe.getWorldMap().put(name.toLowerCase(), new TownyWorld(name));
 
 		universe.setChangedNotify(NEW_WORLD);
 	}
@@ -560,6 +568,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 				town.payTo(town.getHoldingBalance(), new WarSpoils(), "Remove Town");
 				town.removeAccount();
 			} catch (Exception e) {
+				// ignored
 			}
 
 		universe.getTownsMap().remove(town.getName().toLowerCase());
@@ -608,6 +617,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 				nation.payTo(nation.getHoldingBalance(), new WarSpoils(), "Remove Nation");
 				nation.removeAccount();
 			} catch (Exception e) {
+				// ignored
 			}
 
 		//Delete nation and save towns
@@ -710,9 +720,9 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			// TODO: Delete/rename any invites.
 
 			List<Resident> toSave = new ArrayList<>(town.getResidents());
-			Boolean isCapital = false;
+			boolean isCapital = false;
 			Nation nation = null;
-			Double townBalance = 0.0;
+			double townBalance = 0.0;
 			oldName = town.getName();
 
 			// Save the towns bank balance to set in the new account.
@@ -726,6 +736,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 					town.removeAccount();
 					
 				} catch (EconomyException e) {
+					// ignored
 				}
 			UUID oldUUID = town.getUuid();
 			long oldregistration = town.getRegistered();
@@ -828,7 +839,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			// TODO: Delete/rename any invites.
 
 			List<Town> toSave = new ArrayList<>(nation.getTowns());
-			Double nationBalance = 0.0;
+			double nationBalance = 0.0;
 
 			// Save the nations bank balance to set in the new account.
 			// Clear accounts
@@ -841,6 +852,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 					nation.removeAccount();
 					
 				} catch (EconomyException e) {
+					// ignored
 				}
 
 			UUID oldUUID = nation.getUuid();
@@ -926,11 +938,11 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			//data needed for a new resident
 			double balance = 0.0D;
 			Town town = null;
-			long registered = 0L;		
-			long lastOnline = 0L;
-			boolean isMayor = false;
-			boolean isJailed = false;
-			int JailSpawn = 0;
+			long registered;
+			long lastOnline;
+			boolean isMayor;
+			boolean isJailed;
+			int JailSpawn;
 			
 			boolean transferBalance = !TownyEconomyHandler.hasEconomyAccount(filteredName);
 			
@@ -940,6 +952,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 					balance = resident.getHoldingBalance();
 					resident.removeAccount();
 				} catch (EconomyException e) {
+					// ignored
 				}				
 			}
 			List<Resident> friends = resident.getFriends();
@@ -988,7 +1001,8 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			if(isMayor){
 				try {
 					town.setMayor(resident);
-				} catch (TownyException e) {					
+				} catch (TownyException e) {
+					// ignored
 				}
 			}
 			resident.setJailed(isJailed);

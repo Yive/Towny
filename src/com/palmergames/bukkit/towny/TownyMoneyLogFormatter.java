@@ -9,14 +9,13 @@ import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
 public class TownyMoneyLogFormatter extends SimpleFormatter {
-
 	private DateFormat dateFormat;
-	static final String lineSep = System.getProperty("line.separator");
+	private static final String lineSep = System.getProperty("line.separator");
 
 	@Override
 	public synchronized String format(LogRecord record) {
 
-		StringBuffer buf = new StringBuffer(180);
+		StringBuilder buf = new StringBuilder(180);
 		if (dateFormat == null)
 			dateFormat = new SimpleDateFormat("MMM dd '-' HH:mm:ss");
 

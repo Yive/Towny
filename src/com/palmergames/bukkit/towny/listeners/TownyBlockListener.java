@@ -89,6 +89,7 @@ public class TownyBlockListener implements Listener {
 						playerNeutral = true;
 					}
 			} catch (NotRegisteredException e) {
+				// ignored
 			}
 			
 		}	
@@ -131,7 +132,7 @@ public class TownyBlockListener implements Listener {
 		/* 
 		 * display any error recorded for this plot
 		 */
-		if ((cache.hasBlockErrMsg()) && (event.isCancelled()))
+		if ((cache.hasBlockErrMsg()))
 			TownyMessaging.sendErrorMsg(player, cache.getBlockErrMsg());
 
 	}
@@ -179,6 +180,7 @@ public class TownyBlockListener implements Listener {
 						if (!War.isWarringTown(resident.getTown()))
 							playerNeutral = true;
 				} catch (NotRegisteredException e) {
+					// ignored
 				}
 				
 			}	
@@ -214,7 +216,7 @@ public class TownyBlockListener implements Listener {
 			/* 
 			 * display any error recorded for this plot
 			 */
-			if ((cache.hasBlockErrMsg()) && (event.isCancelled()))
+			if ((cache.hasBlockErrMsg()))
 				TownyMessaging.sendErrorMsg(player, cache.getBlockErrMsg());
 
 		} catch (NotRegisteredException e1) {
@@ -302,7 +304,7 @@ public class TownyBlockListener implements Listener {
 	 */
 	private boolean testBlockMove(Block block, BlockFace direction, boolean pistonBlock) {
 
-		Block blockTo = null;
+		Block blockTo;
 		if (!pistonBlock)
 			blockTo = block.getRelative(direction);
 		else {
@@ -320,11 +322,13 @@ public class TownyBlockListener implements Listener {
 			townyWorld = TownyUniverse.getDataSource().getWorld(loc.getWorld().getName());
 			currentTownBlock = townyWorld.getTownBlock(coord);
 		} catch (NotRegisteredException e) {
+			// ignored
 		}
 
 		try {
 			destinationTownBlock = townyWorld.getTownBlock(coordTo);
 		} catch (NotRegisteredException e1) {
+			// ignored
 		}
 
 		if (currentTownBlock != destinationTownBlock) {
